@@ -1,0 +1,546 @@
+#!/usr/bin/env ruby
+
+# ---------------------------------------------------------------------------- #
+# Copyright 2010-2012, C12G Labs S.L                                           #
+#                                                                              #
+# Licensed under the Apache License, Version 2.0 (the "License"); you may      #
+# not use this file except in compliance with the License. You may obtain      #
+# a copy of the License at                                                     #
+#                                                                              #
+# http://www.apache.org/licenses/LICENSE-2.0                                   #
+#                                                                              #
+# Unless required by applicable law or agreed to in writing, software          #
+# distributed under the License is distributed on an "AS IS" BASIS,            #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.     #
+# See the License for the specific language governing permissions and          #
+# limitations under the License.                                               #
+# ---------------------------------------------------------------------------- #
+
+if ENV['ONE_LOCATION']
+    ONE_LOCATION=ENV['ONE_LOCATION']
+    LIB_LOCATION=ONE_LOCATION+"/lib/ruby"
+    ONE_DATASTORE_VAR=ONE_LOCATION+'/var/datastores/0'
+    ETC_LOCATION=ONE_LOCATION+"/etc"
+else
+    LIB_LOCATION="/usr/lib/one/ruby"
+    ONE_DATASTORE_VAR='/var/lib/one/datastores/0'
+    ETC_LOCATION="/etc/one"
+end
+
+
+$: << LIB_LOCATION
+
+require 'xenapi'
+require 'scripts_common'
+
+require 'rubygems'
+
+require 'base64'
+require 'nokogiri'
+require 'uri'
+require 'fileutils'
+require 'yaml'
+
+include XenAPI
+
+
+def parse_path(path)
+    data={}
+    if path.match(/^xennfs:\/\//)
+        uri=URI.parse(path)
+        data[:scheme]=uri.scheme
+        data[:host]=uri.host
+        data[:path]=uri.path
+        data[:uuid]=uri.path.gsub(/^\//, '').split('/').first
+        data[:tags]=uri.path.gsub(/^\//, '').split('/')[1,-1]||[]
+    else
+        res=path.match(/^([^:]+):(.*)$/)
+
+        return nil if !res
+
+        data[:scheme]='file'
+        data[:host]=res[1]
+        data[:path]=res[2]
+    end
+
+    data
+end
+
+def xen_path(uuid, *tags)
+    base="xennfs://#{$server}/#{uuid}"
+    tag_text=''
+
+    if !tags.flatten.empty?
+        tag_text="/"+tags.join('/')
+    end
+
+    base+tag_text
+end
+
+class DriverDatastore
+    def initialize(args)
+        @args=args
+        @xml_text=Base64.decode64(@args[1])
+
+        @xml=Nokogiri::XML(@xml_text)
+
+        @path=@xml.xpath('/DS_DRIVER_ACTION_DATA/IMAGE/PATH').text
+        @source=@xml.xpath('/DS_DRIVER_ACTION_DATA/IMAGE/SOURCE').text
+        @image_id=@xml.xpath('/DS_DRIVER_ACTION_DATA/IMAGE/ID').text
+
+
+        @sr_nfs=SR.find_by_name($sr_name).first
+        @sr_nfs.share=$sr_mount_point
+    end
+
+    def execute
+        command=@args[0]
+
+        case command
+        when 'cp'
+            command_cp
+        when 'rm'
+            command_rm
+        when 'mkfs'
+            command_mkfs
+        else
+            puts "Command not found"
+            exit(-1)
+        end
+    end
+
+    def command_cp(*tags)
+        vdi=@sr_nfs.add_image(@path)
+        vdi.update_name("opennebula #{@image_id}")
+        vdi.refresh
+
+        xenpath=xen_path(vdi.info['uuid'], tags)
+
+        puts "#{xenpath} #{vdi.info['virtual_size'].to_i/1024/1024}"
+    end
+
+    def command_rm
+        source=parse_path(@source)
+        uuid=source[:uuid]
+        vdi=VDI.get_by_uuid(uuid)
+        vdi.refresh
+        vdi.destroy
+    end
+
+    def command_mkfs
+        @image_id=@args[1]
+        @path=@args[2]
+
+        STDERR.puts [@image_id, @path]
+
+        command_cp(:no_clone)
+    end
+end
+
+class DriverTM
+    def initialize(args)
+        @args=args
+        @sr_nfs=SR.find_by_name($sr_name).first
+    end
+
+    def execute
+        case @args[0]
+        when 'clone'
+            command_clone
+        when 'ln'
+            command_ln
+        when 'delete'
+            command_delete
+        when 'context'
+            command_context
+        else
+            puts "Command not found"
+            exit(-1)
+        end
+    end
+
+    def command_clone
+        src=parse_path(ARGV[1])
+        dst=parse_path(ARGV[2])
+
+        if src[:scheme]=='xennfs' and dst[:scheme]=='file'
+            src_vdi=VDI.get_by_uuid(src[:uuid])
+
+            if !src[:tags].include?('no_clone')
+                #vdi_clone=src_vdi.copy(@sr_nfs)
+                vdi_clone=src_vdi.clone
+                vdi_clone.refresh
+                vdi_clone.update_name(vdi_clone.info['name_label']+' clone')
+                path_clone=xen_path(vdi_clone.info['uuid'])
+            else
+                vdi_clone=src_vdi
+                path_clone=src
+            end
+
+            STDERR.puts vdi_clone.inspect
+
+            path=dst[:path]
+            dir=File.dirname(path)
+            FileUtils.mkdir_p(dir)
+
+            f=File.open(path, 'w')
+            f.write(path_clone)
+            f.close
+
+            exit(0)
+        end
+        exit(-1)
+    end
+
+    def command_ln
+        src=parse_path(ARGV[1])
+        dst=parse_path(ARGV[2])
+
+        if src[:scheme]=='xennfs' and dst[:scheme]=='file'
+            path_clone=xen_path(src[:uuid], src[:tags]+['no_delete'])
+            path=dst[:path]
+            dir=File.dirname(path)
+            FileUtils.mkdir_p(dir)
+
+            f=File.open(path, 'w')
+            f.write(path_clone)
+            f.close
+
+            exit(0)
+        end
+        exit(-1)
+    end
+
+    def command_delete
+        src=parse_path(ARGV[1])
+
+        if File.directory?(src[:path])
+            STDERR.puts "is a dir, not deleting"
+            vmid=File.basename(src[:path])
+            vdi=VDI.find_by_name("context-#{vmid}.iso").first
+            STDERR.puts vdi.inspect
+            vdi.destroy if vdi
+        else
+            xenpath=parse_path(File.read(src[:path], 256))
+
+            if xenpath[:tags].include?('no_delete')
+                STDERR.puts "Image #{xenpath} should not be deleted."
+                exit(0)
+            end
+
+            vdi=VDI.get_by_uuid(xenpath[:uuid])
+            vdi.refresh
+
+            STDERR.puts vdi
+
+            if vdi.info['name_label'].match(/clone$/)
+                vdi.destroy
+            end
+        end
+    end
+
+    def command_context
+        dst=$sr_mount_point+"/context-#{@args[2]}.iso"
+        FileUtils.cp(@args[1], dst)
+
+        File.chmod(0666, dst)
+
+        sr_iso=SR.find_by_name($sr_iso_name).first
+        STDERR.puts sr_iso.scan.inspect
+
+        vdi=VDI.find_by_name("context-#{@args[2]}.iso").first
+        while !vdi
+            STDERR.puts "iso not found, retrying"
+            sleep 1
+            vdi=VDI.find_by_name("context-#{@args[2]}.iso").first
+        end
+
+        f=open(@args[3], "w")
+        f.puts xen_path(vdi.info['uuid'], :no_clone)
+        f.close
+    end
+
+end
+
+class DriverVMM
+    def initialize(args)
+        @args=args
+    end
+
+    def execute
+        STDERR.puts @args.inspect
+
+        case @args[0]
+        when 'deploy'
+            command_deploy
+        when 'cancel'
+            command_cancel
+        when 'context'
+            command_context
+        when 'save'
+            command_save
+        when 'resume'
+            command_resume
+        when 'poll'
+            command_poll
+        else
+            puts "Command not found"
+            exit(-1)
+        end
+    end
+
+    def add_disk(vm, vmid, d, context=false)
+        STDERR.puts "Adding disk"
+
+        if context
+            disk_id='context'
+        else
+            STDERR.puts disk_id=d.xpath('DISK_ID').text
+        end
+
+        STDERR.puts target=d.xpath('TARGET').text.downcase
+
+        path="#{ONE_DATASTORE_VAR}/#{vmid}/disk.#{disk_id}"
+
+        url_data=File.read(path, 256)
+        
+        url=parse_path(url_data)
+
+        res=target.match(/(hd|sd|xvd)(\w)/)
+
+        raise "Invalid disk target '#{target}'" if !res
+
+        STDERR.puts res.inspect
+
+        pos=res[2].unpack('C')[0]-97 # 97 is the ascii value of 'a'
+
+        vdi=VDI.get_by_uuid(url[:uuid])
+
+        STDERR.puts vm.add_disk(vdi, pos, context)
+    end
+
+    def parse_template(vm, template)
+        @xml=Nokogiri::XML(template)
+        t=@xml.xpath('/TEMPLATE')
+
+        kernel=t.xpath('OS/KERNEL').text
+        initrd=t.xpath('OS/INITRD').text
+        bootloader=t.xpath('OS/BOOTLOADER').text
+        root=t.xpath('OS/ROOT').text
+
+        if !kernel.empty?
+            vm.info['PV_kernel']=kernel
+            vm.info['PV_ramdisk']=initrd
+            vm.info['PV_args']="/dev/#{root}"
+        else
+            vm.info['HVM_boot_params']={'order' => 'dc'}
+            vm.info['HVM_boot_policy']='BIOS order'
+        end
+
+
+        STDERR.puts t.inspect
+
+        vmid=t.xpath('//VMID').text
+
+        vm.set_name("one-#{vmid}")
+
+        STDERR.puts vmid
+
+        xcpu=t.xpath('//VCPU').first
+        if xcpu
+            cpu=xcpu.text
+            vm.set_cpu(cpu)
+        end
+
+        xmemory=t.xpath('//MEMORY')
+        STDERR.puts "memory"
+        STDERR.puts xmemory.inspect
+        if xmemory
+            memory=xmemory.text
+            vm.set_memory(memory.to_i*1024*1024)
+        end
+
+        STDERR.puts vm.create
+        STDERR.puts vm.refresh
+
+        disks=t.xpath('//DISK')
+        disks.each do |d|
+            add_disk(vm, vmid, d)
+        end
+
+        context=t.xpath('//CONTEXT')
+        context.each do |d|
+            add_disk(vm, vmid, d, true)
+        end
+
+        nic_order=0
+        nics=t.xpath('//NIC')
+        STDERR.puts nics.inspect
+        nics.each do |n|
+            bridge=n.xpath('//BRIDGE').text
+            mac=n.xpath('//MAC').text
+
+            network=Network.find_by_name(bridge).first
+            
+            vif=VIF.new_with_defaults
+            vif.set_device(nic_order)
+            vif.set_network(network)
+            vif.set_vm(vm)
+            vif.set_mac(mac)
+            vif.create
+
+            nic_order+=1
+        end
+
+        puts vm.info[:uuid]
+    end
+
+    def command_deploy
+        vm=VM.new_with_defaults
+
+        template=File.read(@args[1])
+
+        STDERR.puts "before parse_template"
+        parse_template(vm, template)
+
+        vm.update('affinity', @args[2])
+
+        vm.start
+
+        puts vm.info['uuid']
+    end
+
+    def command_cancel
+        vm=VM.get_by_uuid(@args[1])
+        vm.hard_shutdown
+        vm.destroy
+    end
+
+    def command_save
+        vm=VM.get_by_uuid(@args[1])
+        vm.suspend
+    end
+
+    def command_resume
+        STDERR.puts @args.inspect
+        vm=VM.get_by_uuid(@args[1])
+        vm.suspend
+    end
+
+    def command_poll
+        vm=VM.get_by_uuid(@args[1])
+        if vm
+            metrics=vm.get_monitoring_data
+            STDERR.puts metrics.inspect
+
+            var=Hash.new
+            var[:usedcpu]=metrics['used_cpu'].round
+            var[:usedmemory]=metrics['memory'].to_f/1024
+
+
+            case vm.info['power_state'].downcase
+            when 'running'
+                state='a'
+            #when 'halted'
+            #    state='-'
+            when 'halted', 'paused', 'suspended'
+                state='e'
+            else
+                state='-'
+            end
+                
+
+            var[:state]=state
+
+            puts var.map {|v| v[0].to_s.upcase+"="+v[1].to_s }.join(" ")
+        else
+            puts "STATE=-"
+        end
+    end
+end
+
+
+class DriverIM
+    def initialize(args)
+        @args=args
+    end
+
+    def execute
+        case @args[0]
+        when 'monitor'
+            command_monitor
+        else
+            puts "Command not found"
+            exit(-1)
+        end
+    end
+
+    def command_monitor
+        host_name=@args[3]
+
+        host=Host.find_by_name(host_name).first
+        if host
+            m=host.get_monitoring_data   
+            d=Hash.new
+
+            d[:hypervisor]='xenserver'
+            d[:cpuspeed]=host.info['cpu_info']['speed']
+            d[:totalcpu]=m['total_cpu'].to_i
+            d[:totalmemory]=m['memory_total_kib'].to_i
+            d[:freememory]=m['memory_free_kib'].to_i
+            d[:usedmemory]=m['memory_total_kib'].to_i-m['memory_free_kib'].to_i
+            d[:usedcpu]=m['used_cpu']
+            d[:freecpu]=m['free_cpu']
+
+            puts d.map {|i| i[0].to_s.upcase+"=\""+i[1].to_s+"\"" }.join(' ')
+        else
+            OpenNebula.error_message("Host #{host_name} not found")
+            exit(-1)
+        end
+    end
+end
+
+
+# Load configuration
+
+config_file=ETC_LOCATION+"/xenserver.conf"
+
+begin
+    config_text=File.read(config_file)
+    config=YAML.load(config_text)
+rescue
+    STDERR.puts "Error loading configuration file #{config_file}"
+    exit(-1)
+end
+
+
+
+$server=config[:pool_master]
+$sr_name=config[:sr_images_name]
+$sr_iso_name=config[:sr_iso_name]
+$sr_mount_point=config[:sr_path]
+
+xen=XenAPIConnection.new($server, config[:user], config[:password])
+XenAPIObject.set_connection(xen)
+
+
+driver=ARGV.shift
+
+case driver
+when 'ds'
+    ds=DriverDatastore.new(ARGV)
+    ds.execute
+when 'tm'
+    tm=DriverTM.new(ARGV)
+    tm.execute
+when 'vmm'
+    vmm=DriverVMM.new(ARGV)
+    vmm.execute
+when 'im'
+    im=DriverIM.new(ARGV)
+    im.execute
+else
+    STDERR.puts "Driver #{driver} not recognized"
+    exit(-1)
+end
+

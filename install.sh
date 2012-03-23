@@ -213,11 +213,13 @@ VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/im \
           $VAR_LOCATION/remotes/im/kvm.d \
           $VAR_LOCATION/remotes/im/xen.d \
+          $VAR_LOCATION/remotes/im/xenserver.d \
           $VAR_LOCATION/remotes/im/vmware.d \
           $VAR_LOCATION/remotes/im/ganglia.d \
           $VAR_LOCATION/remotes/vmm \
           $VAR_LOCATION/remotes/vmm/kvm \
           $VAR_LOCATION/remotes/vmm/xen \
+          $VAR_LOCATION/remotes/vmm/xenserver \
           $VAR_LOCATION/remotes/vmm/vmware \
           $VAR_LOCATION/remotes/vnm \
           $VAR_LOCATION/remotes/vnm/802.1Q \
@@ -233,6 +235,7 @@ VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/tm/ssh \
           $VAR_LOCATION/remotes/tm/vmware \
           $VAR_LOCATION/remotes/tm/iscsi \
+          $VAR_LOCATION/remotes/tm/xenserver \
           $VAR_LOCATION/remotes/hooks \
           $VAR_LOCATION/remotes/hooks/ft \
           $VAR_LOCATION/remotes/datastore \
@@ -240,6 +243,7 @@ VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/datastore/fs \
           $VAR_LOCATION/remotes/datastore/vmware \
           $VAR_LOCATION/remotes/datastore/iscsi \
+          $VAR_LOCATION/remotes/datastore/xenserver \
           $VAR_LOCATION/remotes/auth \
           $VAR_LOCATION/remotes/auth/plain \
           $VAR_LOCATION/remotes/auth/ssh \
@@ -371,6 +375,7 @@ INSTALL_FILES=(
     IM_PROBES_FILES:$VAR_LOCATION/remotes/im
     IM_PROBES_KVM_FILES:$VAR_LOCATION/remotes/im/kvm.d
     IM_PROBES_XEN_FILES:$VAR_LOCATION/remotes/im/xen.d
+    IM_PROBES_XENSERVER_FILES:$VAR_LOCATION/remotes/im/xenserver.d
     IM_PROBES_VMWARE_FILES:$VAR_LOCATION/remotes/im/vmware.d
     IM_PROBES_GANGLIA_FILES:$VAR_LOCATION/remotes/im/ganglia.d
     AUTH_SSH_FILES:$VAR_LOCATION/remotes/auth/ssh
@@ -383,12 +388,14 @@ INSTALL_FILES=(
     AUTH_QUOTA_FILES:$VAR_LOCATION/remotes/auth/quota
     VMM_EXEC_KVM_SCRIPTS:$VAR_LOCATION/remotes/vmm/kvm
     VMM_EXEC_XEN_SCRIPTS:$VAR_LOCATION/remotes/vmm/xen
+    VMM_EXEC_XENSERVER_SCRIPTS:$VAR_LOCATION/remotes/vmm/xenserver
     VMM_EXEC_VMWARE_SCRIPTS:$VAR_LOCATION/remotes/vmm/vmware
     TM_FILES:$VAR_LOCATION/remotes/tm
     TM_SHARED_FILES:$VAR_LOCATION/remotes/tm/shared
     TM_SSH_FILES:$VAR_LOCATION/remotes/tm/ssh
     TM_VMWARE_FILES:$VAR_LOCATION/remotes/tm/vmware
     TM_ISCSI_FILES:$VAR_LOCATION/remotes/tm/iscsi
+    TM_XENSERVER_FILES:$VAR_LOCATION/remotes/tm/xenserver
     TM_DUMMY_FILES:$VAR_LOCATION/remotes/tm/dummy
     TM_LVM_FILES:$VAR_LOCATION/remotes/tm/lvm
     DATASTORE_DRIVER_COMMON_SCRIPTS:$VAR_LOCATION/remotes/datastore/
@@ -396,6 +403,7 @@ INSTALL_FILES=(
     DATASTORE_DRIVER_FS_SCRIPTS:$VAR_LOCATION/remotes/datastore/fs
     DATASTORE_DRIVER_VMWARE_SCRIPTS:$VAR_LOCATION/remotes/datastore/vmware
     DATASTORE_DRIVER_ISCSI_SCRIPTS:$VAR_LOCATION/remotes/datastore/iscsi
+    DATASTORE_DRIVER_XENSERVER_SCRIPTS:$VAR_LOCATION/remotes/datastore/xenserver
     NETWORK_FILES:$VAR_LOCATION/remotes/vnm
     NETWORK_8021Q_FILES:$VAR_LOCATION/remotes/vnm/802.1Q
     NETWORK_DUMMY_FILES:$VAR_LOCATION/remotes/vnm/dummy
@@ -535,6 +543,7 @@ INSTALL_ETC_FILES=(
     VMWARE_ETC_FILES:$ETC_LOCATION
     VMM_EC2_ETC_FILES:$ETC_LOCATION/vmm_ec2
     VMM_EXEC_ETC_FILES:$ETC_LOCATION/vmm_exec
+    VMM_XENSERVER_ETC_FILES:$ETC_LOCATION
     IM_EC2_ETC_FILES:$ETC_LOCATION/im_ec2
     TM_LVM_ETC_FILES:$ETC_LOCATION/tm/
     HM_ETC_FILES:$ETC_LOCATION/hm
@@ -567,7 +576,8 @@ BIN_FILES="src/nebula/oned \
            src/onedb/onedb \
            src/authm_mad/remotes/quota/onequota \
            src/mad/utils/tty_expect \
-           share/scripts/one"
+           share/scripts/one \
+           src/vmm_mad/remotes/xenserver/xenserver"
 
 #-------------------------------------------------------------------------------
 # C/C++ OpenNebula API Library & Development files
@@ -596,7 +606,8 @@ RUBY_LIB_FILES="src/mad/ruby/ActionManager.rb \
                 src/authm_mad/remotes/server_x509/server_x509_auth.rb \
                 src/authm_mad/remotes/server_cipher/server_cipher_auth.rb \
                 src/authm_mad/remotes/ldap/ldap_auth.rb \
-                src/authm_mad/remotes/x509/x509_auth.rb"
+                src/authm_mad/remotes/x509/x509_auth.rb \
+                src/vmm_mad/remotes/xenserver/xenapi.rb"
 
 #-----------------------------------------------------------------------------
 # MAD Script library files, to be installed under $LIB_LOCATION/<script lang>
@@ -668,6 +679,15 @@ VMM_EXEC_XEN_SCRIPTS="src/vmm_mad/remotes/xen/cancel \
                     src/vmm_mad/remotes/xen/shutdown"
 
 #-------------------------------------------------------------------------------
+# VMM SH Driver XenServer scripts, to be installed under $REMOTES_LOCATION/vmm/xenserver
+#-------------------------------------------------------------------------------
+
+VMM_EXEC_XENSERVER_SCRIPTS="src/vmm_mad/remotes/xenserver/cancel \
+                    src/vmm_mad/remotes/xenserver/deploy \
+                    src/vmm_mad/remotes/xenserver/poll \
+                    src/vmm_mad/remotes/xenserver/shutdown"
+
+#-------------------------------------------------------------------------------
 # VMM Driver VMWARE scripts, to be installed under $REMOTES_LOCATION/vmm/vmware
 #-------------------------------------------------------------------------------
 
@@ -697,6 +717,8 @@ IM_PROBES_XEN_FILES="src/im_mad/remotes/xen.d/xen.rb \
                      src/im_mad/remotes/xen.d/architecture.sh \
                      src/im_mad/remotes/xen.d/cpu.sh \
                      src/im_mad/remotes/xen.d/name.sh"
+
+IM_PROBES_XENSERVER_FILES="src/im_mad/remotes/xenserver.d/monitor"
 
 IM_PROBES_VMWARE_FILES="src/im_mad/remotes/vmware.d/vmware.rb"
 
@@ -814,6 +836,13 @@ TM_ISCSI_FILES="src/tm_mad/iscsi/clone \
                  src/tm_mad/iscsi/mv \
                  src/tm_mad/iscsi/mvds \
                  src/tm_mad/iscsi/delete"
+
+TM_XENSERVER_FILES="src/tm_mad/xenserver/clone \
+                 src/tm_mad/xenserver/ln \
+                 src/tm_mad/xenserver/context \
+                 src/tm_mad/xenserver/mvds \
+                 src/tm_mad/xenserver/delete"
+
 #-------------------------------------------------------------------------------
 # Datastore drivers, to be installed under $REMOTES_LOCATION/datastore
 #   - FS based Image Repository, $REMOTES_LOCATION/datastore/fs
@@ -839,6 +868,10 @@ DATASTORE_DRIVER_ISCSI_SCRIPTS="src/datastore_mad/remotes/iscsi/cp \
                          src/datastore_mad/remotes/iscsi/mkfs \
                          src/datastore_mad/remotes/iscsi/rm \
                          src/datastore_mad/remotes/iscsi/iscsi.conf"
+
+DATASTORE_DRIVER_XENSERVER_SCRIPTS="src/datastore_mad/remotes/xenserver/cp \
+                         src/datastore_mad/remotes/xenserver/mkfs \
+                         src/datastore_mad/remotes/xenserver/rm"
 
 #-------------------------------------------------------------------------------
 # Migration scripts for onedb command, to be installed under $LIB_LOCATION
@@ -879,7 +912,10 @@ VMM_EC2_ETC_FILES="src/vmm_mad/ec2/vmm_ec2rc \
 VMM_EXEC_ETC_FILES="src/vmm_mad/exec/vmm_execrc \
                   src/vmm_mad/exec/vmm_exec_kvm.conf \
                   src/vmm_mad/exec/vmm_exec_xen.conf \
+                  src/vmm_mad/exec/vmm_exec_xenserver.conf \
                   src/vmm_mad/exec/vmm_exec_vmware.conf"
+
+VMM_XENSERVER_ETC_FILES="src/vmm_mad/remotes/xenserver/xenserver.conf"
 
 #-------------------------------------------------------------------------------
 # Information drivers config. files, to be installed under $ETC_LOCATION
