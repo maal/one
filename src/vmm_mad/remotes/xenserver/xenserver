@@ -403,7 +403,13 @@ class DriverVMM
         STDERR.puts "before parse_template"
         parse_template(vm, template)
 
-        vm.update('affinity', @args[2])
+        host=Host.find_by_name(@args[2]).first
+
+        if host
+            vm.update('affinity', host.reference)
+        else
+            STDERR.puts "Could not find host #{@args[2]}. Affinity not set"
+        end
 
         vm.start
 
@@ -430,7 +436,7 @@ class DriverVMM
     def command_poll
         vm=VM.get_by_uuid(@args[1])
         if vm
-            metrics=vm.get_monitoring_data
+            metrics=vm.get_monitoring_data(@args[2])
             STDERR.puts metrics.inspect
 
             var=Hash.new
@@ -477,10 +483,13 @@ class DriverIM
 
     def command_monitor
         host_name=@args[3]
-
+=begin
+        xen=XenAPIConnection.new(host_name, $config[:user], $config[:password])
+        XenAPIObject.set_connection(xen)
+=end
         host=Host.find_by_name(host_name).first
         if host
-            m=host.get_monitoring_data   
+            m=host.get_monitoring_data(host_name)
             d=Hash.new
 
             d[:hypervisor]='xenserver'
@@ -519,6 +528,7 @@ $server=config[:pool_master]
 $sr_name=config[:sr_images_name]
 $sr_iso_name=config[:sr_iso_name]
 $sr_mount_point=config[:sr_path]
+$config=config
 
 xen=XenAPIConnection.new($server, config[:user], config[:password])
 XenAPIObject.set_connection(xen)

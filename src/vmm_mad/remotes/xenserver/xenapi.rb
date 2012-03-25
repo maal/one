@@ -234,7 +234,7 @@ module XenAPI
     end
 
     module Monitorizable
-        def get_monitoring_data
+        def get_monitoring_data(host=nil)
             if !@info['uuid']
                 self.refresh
             end
@@ -242,7 +242,7 @@ module XenAPI
             type=self.class.to_s.downcase.split(':').last
 
             uuid=@info['uuid']
-            rrd=RRDData.new(conn.host, conn.user, conn.password)
+            rrd=RRDData.new(host||conn.host, conn.user, conn.password)
             rrd.get_data(type, uuid)
             rrd.data
         end
