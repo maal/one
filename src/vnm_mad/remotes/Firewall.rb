@@ -16,7 +16,7 @@
 
 class OpenNebulaFirewall < OpenNebulaNetwork
     XPATH_FILTER =  "TEMPLATE/NIC[ICMP|WHITE_PORTS_TCP|WHITE_PORTS_UDP|" <<
-                    "BLACK_PORTS_TCP|BLACK_PORTS_UDP]"
+                    "BLACK_PORTS_TCP|BLACK_PORTS_UDP|NO_IP_SPOOFING]"
 
     def initialize(vm, deploy_id = nil, hypervisor = nil)
         super(vm,XPATH_FILTER,deploy_id,hypervisor)
@@ -30,40 +30,51 @@ class OpenNebulaFirewall < OpenNebulaNetwork
             #:black_ports_tcp => iptables_range
             #:black_ports_udp => iptables_range
             #:icmp            => 'DROP' or 'NO'
+            #:no_ip_spoofing  => 'YES' or 'NO'
 
-            nic_rules = Array.new
+            nic_rules_in  = Array.new
+            nic_rules_out = Array.new
 
-            chain   = "one-#{vm_id}-#{nic[:network_id]}"
-            tap     = nic[:tap]
+            chain_in  = "one-#{vm_id}-#{nic[:network_id]}-in"
+            chain_out = "one-#{vm_id}-#{nic[:network_id]}-out"
 
-            if tap
+            tap = nic[:tap]
+
+             if tap
+                #NO_IP_SPOOFING
+                if nic[:no_ip_spoofing] and nic[:no_ip_spoofing].match(/y(es)?/i)
+                    nic_rules_in << filter_noipspoofing(chain_in, nic[:ip], :in)
+                    nic_rules_out << filter_noipspoofing(chain_out, nic[:ip], :out)
+                end
+
                 #TCP
                 if range = nic[:white_ports_tcp]
-                    nic_rules << filter_established(chain, :tcp, :accept)
-                    nic_rules << filter_ports(chain, :tcp, range, :accept)
-                    nic_rules << filter_protocol(chain, :tcp, :drop)
+                    nic_rules_out << filter_established(chain_out, :tcp, :accept)
+                    nic_rules_out << filter_ports(chain_out, :tcp, range, :accept)
+                    nic_rules_out << filter_protocol(chain_out, :tcp, :drop)
                 elsif range = nic[:black_ports_tcp]
-                    nic_rules << filter_ports(chain, :tcp, range, :drop)
+                    nic_rules_out << filter_ports(chain_out, :tcp, range, :drop)
                 end
 
                 #UDP
                 if range = nic[:white_ports_udp]
-                    nic_rules << filter_established(chain, :udp, :accept)
-                    nic_rules << filter_ports(chain, :udp, range, :accept)
-                    nic_rules << filter_protocol(chain, :udp, :drop)
+                    nic_rules_out << filter_established(chain_out, :udp, :accept)
+                    nic_rules_out << filter_ports(chain_out, :udp, range, :accept)
+                    nic_rules_out << filter_protocol(chain_out, :udp, :drop)
                 elsif range = nic[:black_ports_udp]
-                    nic_rules << filter_ports(chain, :udp, range, :drop)
+                    nic_rules_out << filter_ports(chain_out, :udp, range, :drop)
                 end
 
                 #ICMP
                 if nic[:icmp]
                     if %w(no drop).include? nic[:icmp].downcase
-                        nic_rules << filter_established(chain, :icmp, :accept)
-                        nic_rules << filter_protocol(chain, :icmp, :drop)
+                        nic_rules_out << filter_established(chain_out, :icmp, :accept)
+                        nic_rules_out << filter_protocol(chain_out, :icmp, :drop)
                     end
                 end
 
-                process_chain(chain, tap, nic_rules)
+                process_chain(chain_out, tap, nic_rules_out, :out)
+                process_chain(chain_in, tap, nic_rules_in, :in)
             end
         end
     end
@@ -71,11 +82,15 @@ class OpenNebulaFirewall < OpenNebulaNetwork
     def deactivate
         vm_id =  @vm['ID']
         process do |nic|
-            chain   = "one-#{vm_id}-#{nic[:network_id]}"
-            iptables_out = `#{COMMANDS[:iptables]} -n -v --line-numbers -L FORWARD`
-            if m = iptables_out.match(/.*#{chain}.*/)
-                rule_num = m[0].split(/\s+/)[0]
-                purge_chain(chain, rule_num)
+            chain_in    = "one-#{vm_id}-#{nic[:network_id]}-in"
+            chain_out   = "one-#{vm_id}-#{nic[:network_id]}-out"
+            [chain_in, chain_out].each do |chain|
+                cmd = "#{COMMANDS[:iptables]} -n -v --line-numbers -L FORWARD"
+                iptables_out = `#{cmd}`
+                if m = iptables_out.match(/.*#{chain}.*/)
+                    rule_num = m[0].split(/\s+/)[0]
+                    purge_chain(chain, rule_num)
+                end
             end
         end
     end
@@ -88,17 +103,27 @@ class OpenNebulaFirewall < OpenNebulaNetwork
         run_rules rules
     end
 
-    def process_chain(chain, tap, nic_rules)
+    def process_chain(chain, tap, nic_rules, sense)
         rules = Array.new
         if !nic_rules.empty?
             # new chain
             rules << new_chain(chain)
             # move tap traffic to chain
-            rules << tap_to_chain(tap, chain)
+            rules << tap_to_chain(tap, chain, sense)
 
             rules << nic_rules
         end
         run_rules rules
+    end
+
+    def filter_noipspoofing(chain, ip, sense)
+        if sense == :in
+            param = "-s"
+        else
+            param = "-d"
+        end
+
+        rule "-A #{chain} ! #{param} #{ip} -j DROP"
     end
 
     def filter_established(chain, protocol, policy)
@@ -130,8 +155,8 @@ class OpenNebulaFirewall < OpenNebulaNetwork
         end
     end
 
-    def tap_to_chain(tap, chain)
-        rule "-A FORWARD -m physdev --physdev-out #{tap} -j #{chain}"
+    def tap_to_chain(tap, chain, sense)
+        rule "-A FORWARD -m physdev --physdev-#{sense.to_s} #{tap} -j #{chain}"
     end
 
     def new_chain(chain)
