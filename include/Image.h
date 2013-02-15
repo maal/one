@@ -75,10 +75,11 @@ public:
      */
     enum DiskType
     {
-        FILE   = 0, /** < File-based disk */
-        CD_ROM = 1, /** < An ISO9660 disk */
-        BLOCK  = 2, /** < Block-device disk */
-        RBD    = 3  /** < CEPH RBD disk */
+        FILE   = 0,  /** < File-based disk */
+        CD_ROM = 1,  /** < An ISO9660 disk */
+        BLOCK  = 2,  /** < Block-device disk */
+        RBD    = 3,  /** < CEPH RBD disk */
+        GLUSTER = 4  /** < GlusterFS disk */
     };
 
     /**
@@ -90,11 +91,12 @@ public:
     {
         switch (ob)
         {
-            case FILE:   return "FILE" ; break;
-            case CD_ROM: return "CDROM" ; break;
-            case BLOCK:  return "BLOCK" ; break;
-            case RBD:    return "RBD" ; break;
-            default:     return "";
+            case FILE:    return "FILE" ; break;
+            case CD_ROM:  return "CDROM" ; break;
+            case BLOCK:   return "BLOCK" ; break;
+            case RBD:     return "RBD" ; break;
+            case GLUSTER: return "GLUSTER" ; break;
+            default:      return "";
         }
     };
 

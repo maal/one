@@ -361,6 +361,19 @@ int LibVirtDriver::deployment_description_kvm(
 
             file << "'/>" << endl;
         }
+        else if ( type == "GLUSTER" )
+        {
+            file << "\t\t<disk type='network' device='disk'>" << endl
+                 << "\t\t\t<source protocol='gluster' name='"
+                 << source;
+
+            if ( clone == "YES" )
+            {
+                file << "-" << vm->get_oid() << "-" << disk_id;
+            }
+
+            file << "'/>" << endl;
+        }
         else if ( type == "CDROM" )
         {
             file << "\t\t<disk type='file' device='cdrom'>" << endl

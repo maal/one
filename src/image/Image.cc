@@ -577,6 +577,10 @@ int Image::disk_attribute(  VectorAttribute * disk,
             disk_attr_type = disk_type_to_str(disk_type);
         break;
 
+        case GLUSTER: //Type is GLUSTER
+            disk_attr_type = disk_type_to_str(disk_type);
+        break;
+
         case CDROM: //Always use CDROM type for these ones
             disk_attr_type = "CDROM";
         break;

@@ -188,6 +188,10 @@ int Datastore::insert(SqlDB *db, string& error_str)
         {
             disk_type = Image::RBD;
         }
+        else if (s_disk_type == "GLUSTER")
+        {
+            disk_type = Image::GLUSTER;
+        }
     }
 
     if ( tm_mad.empty() == true )
