@@ -2887,7 +2887,7 @@ msgstr "Neuen Host erstellen"
 
 #: ../public/js/plugins/infra-tab.js:59
 msgid "Create new Datastore"
-msgstr "Maus"
+msgstr "Neuen Datenspeicher erstellen"
 
 #: ../public/js/plugins/infra-tab.js:60
 msgid "Create new Virtual Network"
