@@ -351,7 +351,7 @@ int LibVirtDriver::deployment_description_kvm(
         else if ( type == "RBD" )
         {
             file << "\t\t<disk type='network' device='disk'>" << endl
-                 << "\t\t\t<source protocol='rbd' name='"
+                 << "\t\t\t<source protocol='rbd' name=''"
                  << source;
 
             if ( clone == "YES" )
@@ -364,7 +364,8 @@ int LibVirtDriver::deployment_description_kvm(
         else if ( type == "GLUSTER" )
         {
             file << "\t\t<disk type='network' device='disk'>" << endl
-                 << "\t\t\t<source protocol='gluster' name='"
+                 << "\t\t\t<source protocol='gluster' name='volume/image'"
+                 << "\t\t\t<host name='localhost' port='6000' transport='socket'"
                  << source;
 
             if ( clone == "YES" )
