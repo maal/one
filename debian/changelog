@@ -72,9 +72,9 @@ opennebula (3.8.3-1) unstable; urgency=low
       * Import OpenNebula 3.7.80 from upstream.
       * Distribute file changes in the d/*install files.
     
-     -- Jaime Melis <j.melis@opennebula.org>  Wed, 05 Sep 2012 17:50:20 +0200
+ -- Jaime Melis <j.melis@opennebula.org>  Wed, 05 Sep 2012 17:50:20 +0200
     
-    opennebula (3.4.1-3) unstable; urgency=low
+opennebula (3.4.1-3) unstable; urgency=low
     
       * Add support for noVNC to SelfService and Sunstone UI:
         - Closes: #666079, #674583
@@ -91,9 +91,9 @@ opennebula (3.8.3-1) unstable; urgency=low
         user will have to choose a default or set this in each template.
         (Closes: #673173).
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sat, 26 May 2012 01:21:12 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sat, 26 May 2012 01:21:12 +0200
     
-    opennebula (3.4.1-2) unstable; urgency=low
+opennebula (3.4.1-2) unstable; urgency=low
     
       * Upstream changed default port of Sunstone from 4567 to 9869 (remove
         conflicts with OCCI):
@@ -106,9 +106,9 @@ opennebula (3.8.3-1) unstable; urgency=low
         (Closes: #673010)
       * Try to rmdir /var/lib/one during package purge. (Closes: #668758).
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 18 May 2012 19:45:43 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 18 May 2012 19:45:43 +0200
     
-    opennebula (3.4.1-1) unstable; urgency=low
+opennebula (3.4.1-1) unstable; urgency=low
     
       * New upstream release:
         - d/patches/default_conf.diff: Drop, transfert manager is now handled
@@ -124,9 +124,9 @@ opennebula (3.8.3-1) unstable; urgency=low
       * Add Suggests: ruby-uuidtools for econe-server.
       * Install more manpages from upstream
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 11 May 2012 19:27:43 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 11 May 2012 19:27:43 +0200
     
-    opennebula (3.2.1-3) unstable; urgency=low
+opennebula (3.2.1-3) unstable; urgency=low
     
       * Fix FTBFS with GCC-4.7: Add missing include. (Closes: #672092).
       * d/control: Bump Standards-Version to 3.9.3, no changes needed.
@@ -137,9 +137,9 @@ opennebula (3.8.3-1) unstable; urgency=low
       * d/opennebula.install: Install html/js/image files for self-service portal
         (Closes: #663086).
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Apr 2012 14:20:40 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Apr 2012 14:20:40 +0200
     
-    opennebula (3.2.1-2) unstable; urgency=low
+opennebula (3.2.1-2) unstable; urgency=low
     
       * Fix "Overwrites the admin password on upgrades": Merge proposed patch
         from Guido Günther. (Closes: #666050).
@@ -151,9 +151,9 @@ opennebula (3.8.3-1) unstable; urgency=low
       * d/README.Debian: Update for new onehost syntax (Closes: #665975).
       * d/rules: Enable security hardening options and -Wl,--as-needed.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Apr 2012 13:20:07 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Apr 2012 13:20:07 +0200
     
-    opennebula (3.2.1-1) unstable; urgency=low
+opennebula (3.2.1-1) unstable; urgency=low
     
       [ Jaime Melis ]
       * New upstream release (3.2.1)
@@ -173,9 +173,9 @@ opennebula (3.8.3-1) unstable; urgency=low
         FHS compliance).
       * d/rules: Add override to cleanup some extra-license-file.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Wed, 22 Feb 2012 20:29:46 +0100
-    
-    opennebula (3.2.0-1) UNRELEASED; urgency=low
+ -- Damien Raude-Morvan <drazzib@debian.org>  Wed, 22 Feb 2012 20:29:46 +0100
+  
+opennebula (3.2.0-1) UNRELEASED; urgency=low
     
       * New upstream release (3.2.0)
         - Refresh all other patches for changes made upstream.
