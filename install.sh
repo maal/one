@@ -239,6 +239,7 @@ VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/tm/iscsi \
           $VAR_LOCATION/remotes/tm/lvm \
           $VAR_LOCATION/remotes/tm/ceph \
+          $VAR_LOCATION/remotes/tm/gluster \
           $VAR_LOCATION/remotes/hooks \
           $VAR_LOCATION/remotes/hooks/ft \
           $VAR_LOCATION/remotes/datastore \
@@ -249,6 +250,7 @@ VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/datastore/iscsi \
           $VAR_LOCATION/remotes/datastore/lvm \
           $VAR_LOCATION/remotes/datastore/ceph \
+          $VAR_LOCATION/remotes/datastore/gluster \
           $VAR_LOCATION/remotes/auth \
           $VAR_LOCATION/remotes/auth/plain \
           $VAR_LOCATION/remotes/auth/ssh \
@@ -443,6 +445,7 @@ INSTALL_FILES=(
     TM_ISCSI_FILES:$VAR_LOCATION/remotes/tm/iscsi
     TM_LVM_FILES:$VAR_LOCATION/remotes/tm/lvm
     TM_CEPH_FILES:$VAR_LOCATION/remotes/tm/ceph
+    TM_GLUSTER_FILES:$VAR_LOCATION/remotes/tm/gluster
     TM_DUMMY_FILES:$VAR_LOCATION/remotes/tm/dummy
     DATASTORE_DRIVER_COMMON_SCRIPTS:$VAR_LOCATION/remotes/datastore/
     DATASTORE_DRIVER_DUMMY_SCRIPTS:$VAR_LOCATION/remotes/datastore/dummy
@@ -452,6 +455,7 @@ INSTALL_FILES=(
     DATASTORE_DRIVER_ISCSI_SCRIPTS:$VAR_LOCATION/remotes/datastore/iscsi
     DATASTORE_DRIVER_LVM_SCRIPTS:$VAR_LOCATION/remotes/datastore/lvm
     DATASTORE_DRIVER_CEPH_SCRIPTS:$VAR_LOCATION/remotes/datastore/ceph
+    DATASTORE_DRIVER_GLUSTER_SCRIPTS:$VAR_LOCATION/remotes/datastore/gluster
     NETWORK_FILES:$VAR_LOCATION/remotes/vnm
     NETWORK_8021Q_FILES:$VAR_LOCATION/remotes/vnm/802.1Q
     NETWORK_DUMMY_FILES:$VAR_LOCATION/remotes/vnm/dummy
@@ -895,6 +899,7 @@ NETWORK_VMWARE_FILES="src/vnm_mad/remotes/vmware/clean \
 #   - ISCSI TM, $VAR_LOCATION/tm/iscsi
 #   - LVM TM, $VAR_LOCATION/tm/lvm
 #   - CEPH TM, $VAR_LOCATION/tm/ceph
+#   - GLUSTER TM, $VAR_LOCATION/tm/gluster
 #-------------------------------------------------------------------------------
 
 TM_FILES="src/tm_mad/tm_common.sh"
@@ -978,6 +983,14 @@ TM_CEPH_FILES="src/tm_mad/ceph/clone \
                  src/tm_mad/ceph/postmigrate \
                  src/tm_mad/ceph/delete"
 
+TM_GLUSTER_FILES="src/tm_mad/gluster/clone \
+                  src/tm_mad/gluster/ln \
+                  src/tm_mad/gluster/mv \
+                  src/tm_mad/gluster/mvds \
+                  src/tm_mad/gluster/premigrate \
+                  src/tm_mad/gluster/postmigrate \
+                  src/tm_mad/gluster/delete"
+
 #-------------------------------------------------------------------------------
 # Datastore drivers, to be installed under $REMOTES_LOCATION/datastore
 #   - Dummy Image Repository, $REMOTES_LOCATION/datastore/dummy
@@ -1037,6 +1050,13 @@ DATASTORE_DRIVER_CEPH_SCRIPTS="src/datastore_mad/remotes/ceph/cp \
                          src/datastore_mad/remotes/ceph/rm \
                          src/datastore_mad/remotes/ceph/clone \
                          src/datastore_mad/remotes/ceph/ceph.conf"
+
+DATASTORE_DRIVER_GLUSTER_SCRIPTS="src/datastore_mad/remotes/gluster/cp \
+                                  src/datastore_mad/remotes/gluster/mkfs \
+                                  src/datastore_mad/remotes/gluster/stat \
+                                  src/datastore_mad/remotes/gluster/rm \
+                                  src/datastore_mad/remotes/gluster/clone \
+                                  src/datastore_mad/remotes/gluster/gluster.conf"
 
 #-------------------------------------------------------------------------------
 # Migration scripts for onedb command, to be installed under $LIB_LOCATION
