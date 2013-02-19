@@ -364,8 +364,9 @@ int LibVirtDriver::deployment_description_kvm(
         else if ( type == "GLUSTER" )
         {
             file << "\t\t<disk type='network' device='disk'>" << endl
+                 << "\t\t\t<driver name='qemu' type='raw'"
                  << "\t\t\t<source protocol='gluster' name='volume/image'"
-                 << "\t\t\t<host name='localhost' port='6000' transport='socket'"
+                 << "\t\t\t<host name='localhost' port='6000' transport='socket"
                  << source;
 
             if ( clone == "YES" )
