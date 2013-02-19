@@ -1,0 +1,311 @@
+--- a/src/cloud/common/CloudServer.rb
++++ b/src/cloud/common/CloudServer.rb
+@@ -153,5 +153,7 @@
+                 settings.logger
+             end
+         end
++
++        logger
+     end
+ end
+--- a/src/cloud/ec2/lib/econe-server.rb
++++ b/src/cloud/ec2/lib/econe-server.rb
+@@ -69,41 +69,38 @@
+ conf[:views] = VIEWS_LOCATION
+ conf[:debug_level] ||= 3
+ 
+-CloudServer.print_configuration(conf)
+-
+ ##############################################################################
+ # Sinatra Configuration
+ ##############################################################################
+-set :config, conf
+ 
+ include CloudLogger
+-enable_logging EC2_LOG, settings.config[:debug_level].to_i
++logger = enable_logging EC2_LOG, conf[:debug_level].to_i
+ 
+-if settings.config[:server]
+-    settings.config[:host] ||= settings.config[:server]
++if conf[:server]
++    conf[:host] ||= conf[:server]
+     warning = "Warning: :server: configuration parameter has been deprecated."
+     warning << " Use :host: instead."
+-    settings.logger.warn warning
++    logger.warn warning
+ end
+ 
+-if CloudServer.is_port_open?(settings.config[:host],
+-                             settings.config[:port])
+-    settings.logger.error {
+-        "Port #{settings.config[:port]} busy, please shutdown " <<
++if CloudServer.is_port_open?(conf[:host],
++                             conf[:port])
++    logger.error {
++        "Port #{conf[:port]} busy, please shutdown " <<
+         "the service or move occi server port."
+     }
+     exit -1
+ end
+ 
+-set :bind, settings.config[:host]
+-set :port, settings.config[:port]
++set :bind, conf[:host]
++set :port, conf[:port]
+ 
+ begin
+     ENV["ONE_CIPHER_AUTH"] = EC2_AUTH
+-    cloud_auth = CloudAuth.new(settings.config, settings.logger)
++    cloud_auth = CloudAuth.new(conf, logger)
+ rescue => e
+-    settings.logger.error {"Error initializing authentication system"}
+-    settings.logger.error {e.message}
++    logger.error {"Error initializing authentication system"}
++    logger.error {e.message}
+     exit -1
+ end
+ 
+@@ -115,8 +112,8 @@
+     econe_port = uri.port
+     econe_path = uri.path
+ else
+-    econe_host = settings.config[:host]
+-    econe_port = settings.config[:port]
++    econe_host = conf[:host]
++    econe_port = conf[:port]
+     econe_path = '/'
+ end
+ 
+@@ -124,6 +121,10 @@
+ set :econe_port, econe_port
+ set :econe_path, econe_path
+ 
++set :config, conf
++
++CloudServer.print_configuration(conf)
++
+ ##############################################################################
+ # Actions
+ ##############################################################################
+--- a/src/cloud/occi/lib/occi-server.rb
++++ b/src/cloud/occi/lib/occi-server.rb
+@@ -83,42 +83,42 @@
+ 
+ # Enable Logger
+ include CloudLogger
+-enable_logging OCCI_LOG, settings.config[:debug_level].to_i
++logger = enable_logging OCCI_LOG, conf[:debug_level].to_i
+ 
+ 
+ # Set Sinatra configuration
+ use Rack::Session::Pool, :key => 'occi'
+ 
+-set :public_folder, Proc.new { File.join(root, "ui/public") }
+-set :views, settings.root + '/ui/views'
++set :public, File.dirname(__FILE__) + '/ui/public'
++set :views,  File.dirname(__FILE__) + '/ui/views'
+ 
+-if settings.config[:server]
+-    settings.config[:host] ||= settings.config[:server]
++if conf[:server]
++    conf[:host] ||= conf[:server]
+     warning = "Warning: :server: configuration parameter has been deprecated."
+     warning << " Use :host: instead."
+-    settings.logger.warn warning
++    logger.warn warning
+ end
+ 
+-if CloudServer.is_port_open?(settings.config[:host],
+-                             settings.config[:port])
+-    settings.logger.error {
+-        "Port #{settings.config[:port]} busy, please shutdown " <<
++if CloudServer.is_port_open?(conf[:host],
++                             conf[:port])
++    logger.error {
++        "Port #{conf[:port]} busy, please shutdown " <<
+         "the service or move occi server port."
+     }
+     exit -1
+ end
+ 
+-set :bind, settings.config[:host]
+-set :port, settings.config[:port]
++set :bind, conf[:host]
++set :port, conf[:port]
+ 
+ 
+ # Create CloudAuth
+ begin
+     ENV["ONE_CIPHER_AUTH"] = OCCI_AUTH
+-    cloud_auth = CloudAuth.new(settings.config, settings.logger)
++    cloud_auth = CloudAuth.new(conf, logger)
+ rescue => e
+-    settings.logger.error {"Error initializing authentication system"}
+-    settings.logger.error {e.message}
++    logger.error {"Error initializing authentication system"}
++    logger.error {e.message}
+     exit -1
+ end
+ 
+@@ -129,17 +129,19 @@
+ configure do
+     set :run, false
+ 
+-    if settings.config[:vnc_enable]
++    if conf[:vnc_enable]
+         opts = {
+             :json_errors => false,
+             :token_folder_name => 'selfservice_vnc_tokens'
+         }
+-        set :vnc, OpenNebulaVNC.new(settings.config,
+-                                    settings.logger,
+-                                    opts)
+-        settings.vnc.start()
++
++        vnc = OpenNebulaVNC.new(conf, logger, opts)
++
++        set :vnc, vnc
++
++        vnc.start()
+         Kernel.at_exit do
+-            settings.vnc.stop
++            vnc.stop
+         end
+     end
+ end
+--- a/src/ozones/Server/ozones-server.rb
++++ b/src/ozones/Server/ozones-server.rb
+@@ -81,7 +81,7 @@
+         end
+ 
+         db_url = db_type + "://" + config[:databaseserver] + "/ozones"
+-    else 
++    else
+         warn "DB type #{db_type} not recognized"
+         exit -1
+ end
+@@ -97,7 +97,7 @@
+ 
+ #Enable logger
+ include CloudLogger
+-enable_logging OZONES_LOG, settings.config[:debug_level].to_i
++logger = enable_logging OZONES_LOG, config[:debug_level].to_i
+ 
+ ##############################################################################
+ # DB bootstrapping
+@@ -106,7 +106,7 @@
+ DB = Sequel.connect(db_url)
+ 
+ if config[:dbdebug]
+-    DB.loggers << settings.logger
++    DB.loggers << logger
+ end
+ 
+ require 'OZones'
+@@ -117,7 +117,7 @@
+         credentials = IO.read(ENV['OZONES_AUTH']).strip.split(':')
+ 
+         if credentials.length < 2
+-            settings.logger.error {"Authorization data malformed"}
++            logger.error {"Authorization data malformed"}
+             exit -1
+         end
+         credentials[1] = Digest::SHA1.hexdigest(credentials[1])
+@@ -127,7 +127,7 @@
+         @auth.save(:raise_on_failure => true)
+     else
+         error_m = "oZones admin credentials not set, missing OZONES_AUTH file."
+-        settings.logger.error { error_m }
++        logger.error { error_m }
+         exit -1
+     end
+ else
+@@ -140,7 +140,7 @@
+ begin
+     OZones::ProxyRules.new("apache",config[:htaccess])
+ rescue Exception => e
+-    settings.logger {e.message}
++    logger {e.message}
+     exit -1
+ end
+ 
+@@ -157,7 +157,7 @@
+         auth = Rack::Auth::Basic::Request.new(request.env)
+ 
+         if auth.provided? && auth.basic? && auth.credentials
+-            
++
+             user      = auth.credentials[0]
+             pass      = auth.credentials[1]
+             sha1_pass = Digest::SHA1.hexdigest(pass)
+@@ -198,7 +198,7 @@
+             rc , msg = build_session
+ 
+             if rc == 401
+-               halt 401 
++               halt 401
+             end
+         end
+ 
+--- a/src/sunstone/sunstone-server.rb
++++ b/src/sunstone/sunstone-server.rb
+@@ -77,23 +77,21 @@
+ #Sinatra configuration
+ 
+ set :config, conf
+-set :bind, settings.config[:host]
+-set :port, settings.config[:port]
++set :bind, conf[:host]
++set :port, conf[:port]
+ 
+ use Rack::Session::Pool, :key => 'sunstone'
+ 
+ # Enable logger
+ 
+ include CloudLogger
+-enable_logging SUNSTONE_LOG, settings.config[:debug_level].to_i
+-
++logger = enable_logging SUNSTONE_LOG, conf[:debug_level].to_i
+ begin
+     ENV["ONE_CIPHER_AUTH"] = SUNSTONE_AUTH
+-    cloud_auth = CloudAuth.new(settings.config, settings.logger)
++    cloud_auth = CloudAuth.new(conf, logger)
+ rescue => e
+-    settings.logger.error {
+-        "Error initializing authentication system" }
+-    settings.logger.error { e.message }
++    logger.error { "Error initializing authentication system" }
++    logger.error { e.message }
+     exit -1
+ end
+ 
+@@ -102,11 +100,15 @@
+ #start VNC proxy
+ 
+ configure do
++    vnc = OpenNebulaVNC.new(conf, logger)
++
+     set :run, false
+-    set :vnc, OpenNebulaVNC.new(conf, settings.logger)
+-    settings.vnc.start()
++    set :vnc, vnc
++
++    vnc.start()
++
+     Kernel.at_exit do
+-        settings.vnc.stop
++        vnc.stop
+     end
+ end
+ 
+@@ -211,8 +213,8 @@
+ ##############################################################################
+ # Custom routes
+ ##############################################################################
+-if settings.config[:routes]
+-    settings.config[:routes].each { |route|
++if conf[:routes]
++    conf[:routes].each { |route|
+         require "routes/#{route}"
+     }
+ end

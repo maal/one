@@ -1,0 +1,8 @@
+debian/manpages/econe-server.1
+debian/manpages/occi-server.1
+debian/manpages/mm_sched.1
+debian/manpages/one.1
+debian/manpages/oned.1
+share/man/onedb.1
+share/man/onevdc.1
+share/man/onezone.1

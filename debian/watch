@@ -1,0 +1,5 @@
+version=3
+opts=uversionmangle=s/\-beta/~beta/ \
+http://dev.opennebula.org/projects/opennebula/files \
+ /attachments/download/(?:[\d]+)/(?:one|opennebula)-([\d\.].+).tar.gz \
+ debian debian/orig-tar.sh

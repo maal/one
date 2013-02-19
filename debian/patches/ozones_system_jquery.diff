@@ -1,0 +1,39 @@
+Description: Adapted path to javascript and stylesheet files.
+ Adapted path to javascript and stylesheet files to match their
+ Debian packaging in order to use system jquery libraries.
+Author: Jaime Melis <jmelis@opennebula.org> and
+ Damien Raude-Morvan <drazzib@debian.org>
+--- a/src/ozones/Server/templates/index.html
++++ b/src/ozones/Server/templates/index.html
+@@ -7,14 +7,14 @@
+     <!-- Vendor Libraries -->
+     <link rel="stylesheet" type="text/css" href="vendor/dataTables/demo_table_jui.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/dataTables/ColVis.css" />
+-    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/jquery-ui-1.8.16.custom.css" />
++    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/css/smoothness/jquery-ui.min.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jGrowl/jquery.jgrowl.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jQueryLayout/layout-default-latest.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/FontAwesome/css/font-awesome.css">
+ 
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min.js"></script>
+     <script type="text/javascript" src="vendor/jGrowl/jquery.jgrowl_minimized.js"></script>
+-    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui-1.8.16.custom.min.js"></script>
++    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui.custom.min.js"></script>
+     <script type="text/javascript" src="vendor/jQueryLayout/jquery.layout-latest.min.js"></script>
+     <script type="text/javascript" src="vendor/dataTables/jquery.dataTables.min.js"></script>
+     <script type="text/javascript" src="vendor/dataTables/ColVis.min.js"></script>
+--- a/src/ozones/Server/templates/login.html
++++ b/src/ozones/Server/templates/login.html
+@@ -3,9 +3,9 @@
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <title>OpenNebula oZones Login</title>
+     <link rel="stylesheet" type="text/css" href="css/login.css" />
+-    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/jquery-ui-1.8.16.custom.css" />
++    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/css/smoothness/jquery-ui.min.css" />
+     <!-- Vendor Libraries -->
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min.js"></script>
+     <!--[if IE]>
+     <script type="text/javascript" src="vendor/crypto-js/core-min.js"></script>
+     <script type="text/javascript" src="vendor/crypto-js/enc-base64-min.js"></script>

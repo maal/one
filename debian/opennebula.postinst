@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+ONEHOME=/var/lib/one
+ONEAUTH=$ONEHOME/.one/one_auth
+ONE_GROUP=cloud
+ONE_USER=oneadmin
+
+if [ "$1" = "configure" ]; then
+    chown $ONE_USER:$ONE_GROUP /var/log/one
+    chmod 700 $ONEHOME/.one
+    chown -R $ONE_USER:$ONE_GROUP /var/lib/one
+
+    if [ ! -f $ONEAUTH ]; then
+        ONE_PASSWORD=`apg -m 12 -M cNl -n 1`
+        if [ -n "${ONE_PASSWORD}" ]; then
+            echo "${ONE_USER}:${ONE_PASSWORD}" > $ONEAUTH
+            chown $ONE_USER:$ONE_GROUP $ONEAUTH
+            chmod 600 $ONEAUTH
+        fi
+    fi
+fi
+
+#DEBHELPER#

@@ -1,0 +1,26 @@
+Description: Fix default path for websockify (noVNC) to use system package.
+Author: Damien Raude-Morvan <drazzib@debian.org>
+Last-Update: 2012-05-26
+Forwarded: not-needed
+--- a/src/cloud/occi/etc/occi-server.conf
++++ b/src/cloud/occi/etc/occi-server.conf
+@@ -97,7 +97,7 @@
+ :vnc_enable: no
+ 
+ :vnc_proxy_port: 33876
+-:vnc_proxy_path:
++:vnc_proxy_path: /usr/bin/websockify
+ :vnc_proxy_support_wss: no
+ :vnc_proxy_cert:
+ :vnc_proxy_key:
+--- a/src/sunstone/etc/sunstone-server.conf
++++ b/src/sunstone/etc/sunstone-server.conf
+@@ -70,7 +70,7 @@
+ #   vnc_proxy_cert: Certificate to encrypt wss connections.
+ #   vnc_proxy_key:  Key for wss connections. Only necessary if not included in cert.
+ :vnc_proxy_port: 29876
+-:vnc_proxy_path:
++:vnc_proxy_path: /usr/bin/websockify
+ :vnc_proxy_support_wss: no
+ :vnc_proxy_cert:
+ :vnc_proxy_key:

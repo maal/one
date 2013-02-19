@@ -1,0 +1,11 @@
+--- a/src/cloud/occi/bin/occi-server
++++ b/src/cloud/occi/bin/occi-server
+@@ -18,7 +18,7 @@
+ 
+ if [ -z "$ONE_LOCATION" ]; then
+     OCCI_PID=/var/run/one/occi-server.pid
+-    OCCI_SERVER=/usr/lib/one/ruby/cloud/occi/occi-server.rb
++    OCCI_SERVER=/usr/share/opennebula/occi/occi-server.rb
+     OCCI_LOCK_FILE=/var/lock/one/.occi.lock
+     OCCI_LOG=/var/log/one/occi-server.log
+     OCCI_LOG_ERROR=/var/log/one/occi-server.error

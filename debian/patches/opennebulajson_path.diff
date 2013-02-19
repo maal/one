@@ -1,0 +1,17 @@
+--- a/src/ozones/Server/ozones-server.rb
++++ b/src/ozones/Server/ozones-server.rb
+@@ -35,11 +35,11 @@
+ OZONES_LOG         = LOG_LOCATION + "/ozones-server.log"
+ CONFIGURATION_FILE = ETC_LOCATION + "/ozones-server.conf"
+ 
+-$: << LIB_LOCATION + "/sunstone/models"
++OZONES_ROOT_DIR = File.dirname(__FILE__)
+ $: << RUBY_LIB_LOCATION
+ $: << RUBY_LIB_LOCATION+'/cloud'
+-$: << LIB_LOCATION+'/ozones/models'
+-$: << LIB_LOCATION+'/ozones/lib'
++$: << OZONES_ROOT_DIR+'/models'
++$: << OZONES_ROOT_DIR+'/lib'
+ $: << RUBY_LIB_LOCATION+"/cli"
+ 
+ 

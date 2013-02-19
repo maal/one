@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+ONEHOME=/var/lib/one
+ONE_GROUP=cloud
+ONE_USER=oneadmin
+
+if [ "$1" = "remove" ]; then
+    # Remove logs
+    rm -rf /var/log/one/*
+fi
+
+#DEBHELPER#

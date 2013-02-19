@@ -1,0 +1,15 @@
+Description: Change config.ru of Sunstone to use /usr/share/
+Author: Damien Raude-Morvan <drazzib@debian.org>
+Last-Update: 2011-10-07
+Forwarded: no
+--- a/src/sunstone/bin/sunstone-server
++++ b/src/sunstone/bin/sunstone-server
+@@ -19,7 +19,7 @@
+ 
+ if [ -z "$ONE_LOCATION" ]; then
+     SUNSTONE_PID=/var/run/one/sunstone.pid
+-    SUNSTONE_SERVER=/usr/lib/one/sunstone/sunstone-server.rb
++    SUNSTONE_SERVER=/usr/share/opennebula/sunstone/sunstone-server.rb
+     SUNSTONE_LOCK_FILE=/var/lock/one/.sunstone.lock
+     SUNSTONE_LOG=/var/log/one/sunstone.log
+     SUNSTONE_LOG_ERROR=/var/log/one/sunstone.error

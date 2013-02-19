@@ -1,0 +1,36 @@
+Description: Adapted path to javascript and stylesheet files.
+ Adapted path to javascript and stylesheet files to match their
+ Debian packaging in order to use system jquery libraries.
+Author: Damien Raude-Morvan <drazzib@debian.org> and
+ Jaime Melis <jmelis@opennebula.org>
+--- a/src/sunstone/views/index.erb
++++ b/src/sunstone/views/index.erb
+@@ -7,14 +7,14 @@
+     <!-- Vendor Libraries -->
+     <link rel="stylesheet" type="text/css" href="vendor/dataTables/demo_table_jui.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/dataTables/ColVis.css" />
+-    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/jquery-ui-1.8.16.custom.css" />
++    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/css/smoothness/jquery-ui.min.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jGrowl/jquery.jgrowl.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jQueryLayout/layout-default-latest.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/FontAwesome/css/font-awesome.css" />
+ 
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min.js"></script>
+     <script type="text/javascript" src="vendor/jGrowl/jquery.jgrowl_minimized.js"></script>
+-    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui-1.8.16.custom.min.js"></script>
++    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui.min.js"></script>
+     <script type="text/javascript" src="vendor/jQueryLayout/jquery.layout-latest.min.js"></script>
+     <script type="text/javascript" src="vendor/dataTables/jquery.dataTables.min.js"></script>
+     <script type="text/javascript" src="vendor/dataTables/ColVis.min.js"></script>
+--- a/src/sunstone/views/login.erb
++++ b/src/sunstone/views/login.erb
+@@ -5,7 +5,7 @@
+     <link rel="stylesheet" type="text/css" href="css/login.css" />
+ 
+     <!-- Vendor Libraries -->
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min.js"></script>
+     <!-- End Vendor Libraries -->
+ 
+     <script type="text/javascript" src="js/opennebula.js"></script>

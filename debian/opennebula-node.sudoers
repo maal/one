@@ -1,0 +1,9 @@
+# OpenNebula sudoers file
+#
+# Allow member of cloud group (ie. oneadmin)
+# to call /usr/sbin/xm and /usr/sbin/xentop
+# without password.
+#
+
+%cloud    ALL=(ALL) NOPASSWD: /usr/sbin/xm *
+%cloud    ALL=(ALL) NOPASSWD: /usr/sbin/xentop *

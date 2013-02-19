@@ -1,0 +1,17 @@
+dist/etc/one/auth/server_x509_auth.conf                 /etc/one/auth/
+
+dist/usr/lib/one/ruby/OpenNebula.rb                     /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/opennebula/server_cipher_auth.rb	/usr/lib/one/ruby/
+dist/usr/lib/one/ruby/opennebula/server_x509_auth.rb    /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/opennebula/x509_auth.rb                      /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/zona.rb                           /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/zona/*                            /usr/lib/one/ruby/zona/
+
+dist/usr/lib/one/ruby/cloud/CloudAuth.rb                /usr/lib/one/ruby/cloud/
+dist/usr/lib/one/ruby/cloud/CloudAuth/X509CloudAuth.rb  /usr/lib/one/ruby/cloud/CloudAuth/
+
+dist/usr/lib/one/ruby/OpenNebulaDriver.rb               /usr/lib/one/ruby/OpenNebula/
+
+dist/usr/lib/one/sunstone/models/OpenNebulaJSON.rb      /usr/lib/one/ruby/
+dist/usr/lib/one/sunstone/models/OpenNebulaJSON/*       /usr/lib/one/ruby/OpenNebulaJSON/
+

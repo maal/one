@@ -1,0 +1,32 @@
+dist/etc/one/sunstone-server.conf                           /etc/one/
+dist/etc/one/sunstone-plugins.yaml                          /etc/one/
+
+dist/usr/lib/one/sunstone/*.rb               /usr/share/opennebula/sunstone/
+dist/usr/lib/one/sunstone/models/*           /usr/share/opennebula/sunstone/models/
+dist/usr/lib/one/sunstone/views/*            /usr/share/opennebula/sunstone/views/
+dist/usr/lib/one/sunstone/public/css/*       /usr/share/opennebula/sunstone/public/css/
+dist/usr/lib/one/sunstone/public/js/*        /usr/share/opennebula/sunstone/public/js/
+dist/usr/lib/one/sunstone/public/images/*    /usr/share/opennebula/sunstone/public/images/
+dist/usr/lib/one/sunstone/public/locale/*    /usr/share/opennebula/sunstone/public/locale/
+
+dist/usr/bin/sunstone-server    /usr/bin/
+
+dist/usr/lib/one/ruby/cloud/CloudAuth/SunstoneCloudAuth.rb  /usr/lib/one/ruby/cloud/CloudAuth/
+dist/usr/lib/one/ruby/cloud/marketplace/marketplace_client.rb   /usr/lib/one/ruby/cloud/marketplace
+
+dist/usr/share/one/install_novnc.sh                         /usr/share/opennebula/sunstone/
+
+dist/usr/lib/one/sunstone/public/vendor/FontAwesome/NOTICE  /usr/share/opennebula/sunstone/public/vendor/FontAwesome/NOTICE
+dist/usr/lib/one/sunstone/public/vendor/FontAwesome/css/*   /usr/share/opennebula/sunstone/public/vendor/FontAwesome/css
+dist/usr/lib/one/sunstone/public/vendor/FontAwesome/font/*  /usr/share/opennebula/sunstone/public/vendor/FontAwesome/font
+dist/usr/lib/one/sunstone/public/vendor/crypto-js/*         /usr/share/opennebula/sunstone/public/vendor/crypto-js
+dist/usr/lib/one/sunstone/public/vendor/dataTables/*        /usr/share/opennebula/sunstone/public/vendor/dataTables
+dist/usr/lib/one/sunstone/public/vendor/explorercanvas/*    /usr/share/opennebula/sunstone/public/vendor/explorercanvas
+dist/usr/lib/one/sunstone/public/vendor/fileuploader/*      /usr/share/opennebula/sunstone/public/vendor/fileuploader
+dist/usr/lib/one/sunstone/public/vendor/flot/*              /usr/share/opennebula/sunstone/public/vendor/flot
+dist/usr/lib/one/sunstone/public/vendor/jGrowl/*            /usr/share/opennebula/sunstone/public/vendor/jGrowl
+dist/usr/lib/one/sunstone/public/vendor/jQueryLayout/*      /usr/share/opennebula/sunstone/public/vendor/jQueryLayout
+
+# For Debian Squeeze
+dist/usr/lib/one/sunstone/public/vendor/jQuery/*              /usr/share/opennebula/sunstone/public/vendor/jQuery/
+dist/usr/lib/one/sunstone/public/vendor/jQueryUI/*            /usr/share/opennebula/sunstone/public/vendor/jQueryUI/

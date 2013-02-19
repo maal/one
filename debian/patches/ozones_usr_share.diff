@@ -1,0 +1,11 @@
+--- a/src/ozones/Server/bin/ozones-server
++++ b/src/ozones/Server/bin/ozones-server
+@@ -18,7 +18,7 @@
+ 
+ if [ -z "$ONE_LOCATION" ]; then
+     OZONES_PID=/var/run/one/ozones.pid
+-    OZONES_LOCATION=/usr/lib/one/ozones
++    OZONES_LOCATION=/usr/share/opennebula/ozones
+     OZONES_SERVER=$OZONES_LOCATION/ozones-server.rb
+     OZONES_LOCK_FILE=/var/lock/one/.ozones.lock
+     OZONES_LOG=/var/log/one/ozones-server.log

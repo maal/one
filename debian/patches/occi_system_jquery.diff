@@ -1,0 +1,39 @@
+Description: Adapted path to javascript and stylesheet files.
+ Adapted path to javascript and stylesheet files to match their
+ Debian packaging in order to use system jquery libraries.
+Author: Damien Raude-Morvan <drazzib@debian.org> and
+--- a/src/cloud/occi/lib/ui/templates/login.html
++++ b/src/cloud/occi/lib/ui/templates/login.html
+@@ -3,9 +3,9 @@
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <title>OpenNebula Self-Service Login</title>
+     <link rel="stylesheet" type="text/css" href="css/login.css" />
+-    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/jquery-ui-1.8.16.custom.css" />
++    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/css/smoothness/jquery-ui.min.css" />
+     <!-- Vendor Libraries -->
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min."></script>
+     <script type="text/javascript" src="vendor/crypto-js/core-min.js"></script>
+     <script type="text/javascript" src="vendor/crypto-js/sha1-min.js"></script>
+     <!--[if IE]>
+--- a/src/cloud/occi/lib/ui/views/index.erb
++++ b/src/cloud/occi/lib/ui/views/index.erb
+@@ -6,15 +6,15 @@
+ 
+     <!-- Vendor Libraries -->
+     <link rel="stylesheet" type="text/css" href="vendor/dataTables/demo_table_jui.css" />
+-    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/jquery-ui-1.8.16.custom.css" />
++    <link rel="stylesheet" type="text/css" href="vendor/jQueryUI/css/smoothness/jquery-ui.min.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jGrowl/jquery.jgrowl.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/jQueryLayout/layout-default-latest.css" />
+     <link rel="stylesheet" type="text/css" href="vendor/FontAwesome/css/font-awesome.css" />
+ 
+-    <script type="text/javascript" src="vendor/jQuery/jquery-1.7.2.min.js"></script>
++    <script type="text/javascript" src="vendor/jQuery/jquery.min.js"></script>
+     <script type="text/javascript" src="vendor/xml2json/jquery.xml2json.pack.js"></script>
+     <script type="text/javascript" src="vendor/jGrowl/jquery.jgrowl_minimized.js"></script>
+-    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui-1.8.16.custom.min.js"></script>
++    <script type="text/javascript" src="vendor/jQueryUI/jquery-ui.custom.min.js"></script>
+     <script type="text/javascript" src="vendor/jQueryLayout/jquery.layout-latest.min.js"></script>
+     <script type="text/javascript" src="vendor/dataTables/jquery.dataTables.min.js"></script>
+     <script type="text/javascript" src="vendor/fileuploader/fileuploader.js"></script>

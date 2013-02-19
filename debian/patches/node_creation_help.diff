@@ -1,0 +1,22 @@
+Description: node_creation_help.diff:
+ - Output some extra information from "onehost create" that
+   should help the process of adding new nodes.
+Author: Soren Hansen <soren@ubuntu.com>
+Last-Update: 2010-09-23
+Forwarded: no
+--- a/src/cli/onehost
++++ b/src/cli/onehost
+@@ -264,6 +264,13 @@
+ 
+     if is_successful?(result)
+         puts "ID: " + host.id.to_s if ops[:verbose]
++        
++        puts "Success!\n\nNote: 'oneadmin' on this host needs to be able to ssh to oneadmin@" + ARGV[0] + ",\nso on this host, run:\n    sudo -u oneadmin ssh " + ARGV[0] + "\n\nand verify the host's authenticity.\n\nOn " + ARGV[0] + ", run this:\n    sudo apt-get install opennebula-node\n\n    sudo tee /var/lib/one/.ssh/authorized_keys << EOT\n"
++        pubkeyfp = File.new('/var/lib/one/.ssh/id_rsa.pub', 'r')
++        pubkeys = pubkeyfp.readlines
++        pubkeys.each{|i| puts i}
++        puts "EOT"
++        
+         exit 0
+     end
+ 

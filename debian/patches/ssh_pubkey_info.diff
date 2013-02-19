@@ -1,0 +1,33 @@
+Description: ssh_pubkey_info.diff:
+ - Add ssh_pubkey.sh which extracts the remote oneadmin user's ssh
+   public key, so that it's available in the host info.
+ - Add ssh_pubkey.sh to list of probes to run for kvm hosts.
+Author: Soren Hansen <soren@ubuntu.com>
+Last-Update: 2010-09-13
+Forwarded: no
+--- /dev/null
++++ b/src/im_mad/remotes/common.d/ssh_pubkey.sh
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++for type in dsa rsa
++do
++	candidate="$HOME/.ssh/id_${type}.pub"
++	if [ -f "$candidate" ]
++	then
++		echo PUBKEY=\"`cat $candidate`\"
++		exit 0
++	fi
++done
+--- a/install.sh
++++ b/install.sh
+@@ -370,7 +370,8 @@
+ 
+ IM_PROBES_COMMON_FILES="src/im_mad/remotes/common.d/architecture.sh \
+                      src/im_mad/remotes/common.d/cpu.sh \
+-                     src/im_mad/remotes/common.d/name.sh"
++                     src/im_mad/remotes/common.d/name.sh \
++                     src/im_mad/remotes/common.d/ssh_pubkey.sh"
+ 
+ IM_PROBES_XEN_FILES="src/im_mad/remotes/xen.d/xen.rb"
+ 

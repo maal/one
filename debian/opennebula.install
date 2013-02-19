@@ -1,0 +1,132 @@
+dist/var/lib/one/*      /var/lib/one/
+
+dist/etc/one/defaultrc           /etc/one/
+dist/etc/one/econe.conf          /etc/one/
+dist/etc/one/group.default       /etc/one/
+dist/etc/one/occi-server.conf    /etc/one/
+dist/etc/one/oned.conf           /etc/one/
+dist/etc/one/ozones-server.conf  /etc/one/
+dist/etc/one/sched.conf          /etc/one/
+dist/etc/one/vmwarerc            /etc/one/
+
+dist/etc/one/auth/x509_auth.conf /etc/one/auth/
+dist/etc/one/auth/ldap_auth.conf /etc/one/auth/
+
+dist/etc/one/ec2query_templates/*  /etc/one/ec2query_templates/
+dist/etc/one/hm/*                  /etc/one/hm/
+dist/etc/one/im_ec2/*              /etc/one/im_ec2/
+dist/etc/one/occi_templates/*      /etc/one/occi_templates/
+dist/etc/one/vmm_ec2/*             /etc/one/vmm_ec2/
+dist/etc/one/vmm_exec/*            /etc/one/vmm_exec/
+
+dist/usr/lib/one/sh/*           /usr/lib/one/sh/
+dist/usr/lib/one/mads/*         /usr/lib/one/mads/
+
+dist/usr/lib/one/ruby/CommandManager.rb    /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/Ganglia.rb           /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/OpenNebulaDriver.rb  /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/scripts_common.rb    /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/ssh_stream.rb        /usr/lib/one/ruby/
+
+dist/usr/lib/one/ruby/onedb/*              /usr/lib/one/ruby/onedb/
+
+dist/usr/lib/one/ruby/cloud/occi/VirtualNetworkOCCI.rb      /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/VirtualNetworkPoolOCCI.rb  /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/OCCIServer.rb              /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/VirtualMachineOCCI.rb      /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/ImagePoolOCCI.rb           /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/VirtualMachinePoolOCCI.rb  /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/UserOCCI.rb                /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/UserPoolOCCI.rb            /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/ImageOCCI.rb               /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/occi/OpenNebulaVNC.rb           /usr/lib/one/ruby/cloud/occi/
+
+# TODO report bug
+dist/usr/lib/one/sunstone/OpenNebulaVNC.rb                  /usr/lib/one/ruby/cloud/occi/
+
+dist/usr/lib/one/ruby/cloud/occi/occi-server.rb        /usr/share/opennebula/occi/
+dist/usr/lib/one/ruby/cloud/occi/ui/templates/*        /usr/share/opennebula/occi/ui/templates/
+dist/usr/lib/one/ruby/cloud/occi/ui/views/*            /usr/share/opennebula/occi/ui/views/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/css/*       /usr/share/opennebula/occi/ui/public/css/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/customize/* /usr/share/opennebula/occi/ui/public/customize/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/images/*    /usr/share/opennebula/occi/ui/public/images/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/js/*        /usr/share/opennebula/occi/ui/public/js/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/locale/*    /usr/share/opennebula/occi/ui/public/locale/
+
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/FontAwesome/NOTICE  /usr/share/opennebula/occi/ui/public/vendor/FontAwesome/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/FontAwesome/css/*   /usr/share/opennebula/occi/ui/public/vendor/FontAwesome/css/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/FontAwesome/font/*  /usr/share/opennebula/occi/ui/public/vendor/FontAwesome/font/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/crypto-js/*         /usr/share/opennebula/occi/ui/public/vendor/crypto-js/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/dataTables/*        /usr/share/opennebula/occi/ui/public/vendor/dataTables/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/fileuploader/*      /usr/share/opennebula/occi/ui/public/vendor/fileuploader/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/flot/*              /usr/share/opennebula/occi/ui/public/vendor/flot/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/jGrowl/*            /usr/share/opennebula/occi/ui/public/vendor/jGrowl/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/jQueryLayout/*      /usr/share/opennebula/occi/ui/public/vendor/jQueryLayout/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/xml2json/*          /usr/share/opennebula/occi/ui/public/vendor/xml2json/
+
+# For Debian Squeeze
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/jQuery/*    /usr/share/opennebula/occi/ui/public/vendor/jQuery/
+dist/usr/lib/one/ruby/cloud/occi/ui/public/vendor/jQueryUI/*  /usr/share/opennebula/occi/ui/public/vendor/jQueryUI/
+
+dist/usr/lib/one/ruby/cloud/econe/econe-server.rb         /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/elastic_ip.rb           /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/ImageEC2.rb             /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/EC2QueryServer.rb       /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/ebs.rb                  /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/instance.rb             /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/keypair.rb              /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/net_ssh_replacement.rb  /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/econe/views/*                 /usr/lib/one/ruby/cloud/econe/views/
+
+dist/usr/lib/one/ruby/cloud/CloudServer.rb                    /usr/lib/one/ruby/cloud/
+dist/usr/lib/one/ruby/cloud/CloudAuth/OCCICloudAuth.rb        /usr/lib/one/ruby/cloud/CloudAuth/
+dist/usr/lib/one/ruby/cloud/CloudAuth/EC2CloudAuth.rb         /usr/lib/one/ruby/cloud/CloudAuth/
+dist/usr/lib/one/ruby/cloud/CloudAuth/OpenNebulaCloudAuth.rb  /usr/lib/one/ruby/cloud/CloudAuth/
+dist/usr/lib/one/ruby/one_vnm.rb                              /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/DriverExecHelper.rb                     /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/ActionManager.rb                        /usr/lib/one/ruby/
+dist/usr/lib/one/ruby/VirtualMachineDriver.rb                 /usr/lib/one/ruby/
+
+dist/usr/share/one/examples/*  /usr/share/doc/opennebula/examples/
+
+dist/usr/bin/occi-server   /usr/bin/
+dist/usr/bin/oned          /usr/bin/
+dist/usr/bin/mm_sched      /usr/bin/
+dist/usr/bin/onedb         /usr/bin/
+dist/usr/bin/tty_expect    /usr/bin/
+dist/usr/bin/econe-server  /usr/bin/
+dist/usr/bin/one           /usr/bin/
+dist/usr/bin/oneacct       /usr/bin/
+
+# oZones
+
+dist/etc/one/ozones-server.conf     /etc/one/
+
+dist/usr/lib/one/ozones/ozones-server.rb  /usr/share/opennebula/ozones/
+
+dist/usr/lib/one/ozones/lib/*            /usr/share/opennebula/ozones/lib/
+dist/usr/lib/one/ozones/templates/*      /usr/share/opennebula/ozones/templates/
+dist/usr/lib/one/ozones/models/*         /usr/share/opennebula/ozones/models/
+dist/usr/lib/one/ozones/public/js/*      /usr/share/opennebula/ozones/public/js/
+dist/usr/lib/one/ozones/public/css/*     /usr/share/opennebula/ozones/public/css/
+dist/usr/lib/one/ozones/public/images/*  /usr/share/opennebula/ozones/public/images/
+
+dist/usr/lib/one/ozones/public/vendor/FontAwesome/NOTICE  /usr/share/opennebula/ozones/public/vendor/FontAwesome/
+dist/usr/lib/one/ozones/public/vendor/FontAwesome/css/*   /usr/share/opennebula/ozones/public/vendor/FontAwesome/css/
+dist/usr/lib/one/ozones/public/vendor/FontAwesome/font/*  /usr/share/opennebula/ozones/public/vendor/FontAwesome/font/
+dist/usr/lib/one/ozones/public/vendor/crypto-js/*         /usr/share/opennebula/ozones/public/vendor/crypto-js/
+dist/usr/lib/one/ozones/public/vendor/dataTables/*        /usr/share/opennebula/ozones/public/vendor/dataTables/
+dist/usr/lib/one/ozones/public/vendor/jGrowl/*            /usr/share/opennebula/ozones/public/vendor/jGrowl/
+dist/usr/lib/one/ozones/public/vendor/jQueryLayout/*      /usr/share/opennebula/ozones/public/vendor/jQueryLayout/
+
+# For Debian Squeeze
+dist/usr/lib/one/ozones/public/vendor/jQuery/*                /usr/share/opennebula/ozones/public/vendor/jQuery/
+dist/usr/lib/one/ozones/public/vendor/jQueryUI/*              /usr/share/opennebula/ozones/public/vendor/jQueryUI/
+
+dist/usr/bin/onevdc         /usr/bin/
+dist/usr/bin/onezone        /usr/bin/
+dist/usr/bin/onezonedb      /usr/bin/
+dist/usr/bin/ozones-server  /usr/bin/
+
+dist/usr/share/one/install_novnc.sh                         /usr/share/opennebula/
+

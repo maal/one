@@ -1,0 +1,6 @@
+/var/log/one/
+/var/lib/one/
+/var/lib/one/.one
+/var/lib/one/images/
+/etc/one/auth/certificates/
+/usr/lib/one/ruby/zona/

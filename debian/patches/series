@@ -1,0 +1,15 @@
+#node_creation_help.diff
+#ssh_pubkey_info.diff
+linking.diff
+sunstone_usr_share.diff
+#sunstone_system_jquery.diff
+ozones_usr_share.diff
+#ozones_system_jquery.diff
+opennebulajson_path.diff
+gcc_4_7_ftbfs.diff
+occi_usr_share.diff
+#occi_system_jquery.diff
+#novnc_path.diff
+#no_default_arch.diff
+legacy_sinatra.diff
+novnc_install_path.diff

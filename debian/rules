@@ -1,0 +1,103 @@
+#!/usr/bin/make -f
+
+# Handle group assignment: libvirt (Debian) and libvirtd (Ubuntu)
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+	LIB_VIRT_GROUP = libvirtd
+else
+	LIB_VIRT_GROUP = libvirt
+endif
+
+dpkg_buildflags = DEB_LDFLAGS_MAINT_APPEND="-Wl,--as-needed" dpkg-buildflags
+# injecting CPPFLAGS to CFLAGS and CXXFLAGS
+export CPPFLAGS:=$(shell $(dpkg_buildflags) --get CPPFLAGS)
+export CFLAGS:=$(shell $(dpkg_buildflags) --get CFLAGS) $(CPPFLAGS)
+export CXXFLAGS:=$(shell $(dpkg_buildflags) --get CXXFLAGS) $(CPPFLAGS)
+export LDFLAGS:=$(shell $(dpkg_buildflags) --get LDFLAGS)
+
+%:
+	dh $@ --with javahelper --with bash-completion
+
+override_dh_auto_build:
+	scons  mysql=yes #parsers=yes
+	(cd src/oca/java/; \
+	ln -s /usr/share/java/xmlrpc-common-3.1.jar lib/; \
+	ln -s /usr/share/java/xmlrpc-client-3.1.jar lib/; \
+	ln -s /usr/share/java/ws-commons-util.jar lib/; \
+	./build.sh -d)
+
+override_dh_auto_install:
+	DESTDIR=dist ./install.sh
+	dh_auto_install
+ifneq (,$(filter opennebula-node, $(shell dh_listpackages)))
+	dh_install -p opennebula-node debian/opennebula-node.sudoers /etc/sudoers.d
+	mv debian/opennebula-node/etc/sudoers.d/opennebula-node.sudoers \
+	   debian/opennebula-node/etc/sudoers.d/opennebula-node
+endif
+ifneq (,$(filter opennebula, $(shell dh_listpackages)))
+	dh_install -p opennebula share/pkgs/Ubuntu/opennebula /etc/init.d/
+	dh_installinit -p opennebula --name=opennebula --onlyscripts
+endif
+ifneq (,$(filter opennebula-sunstone, $(shell dh_listpackages)))
+	dh_installinit -p opennebula-sunstone --name=sunstone
+endif
+
+override_dh_install:
+	dh_install
+ifneq (,$(filter opennebula, $(shell dh_listpackages)))
+	rm debian/opennebula/usr/share/opennebula/ozones/public/vendor/dataTables/BSD-LICENSE.txt
+	rm debian/opennebula/usr/share/opennebula/occi/ui/public/vendor/crypto-js/NEW-BSD-LICENSE.txt
+	rm debian/opennebula/usr/share/opennebula/occi/ui/public/vendor/dataTables/BSD-LICENSE.txt
+	rm debian/opennebula/usr/share/opennebula/occi/ui/public/vendor/flot/LICENSE.txt
+endif
+ifneq (,$(filter opennebula-sunstone, $(shell dh_listpackages)))
+	dh_installinit -p opennebula-sunstone --name=sunstone
+	rm debian/opennebula-sunstone/usr/share/opennebula/sunstone/public/vendor/dataTables/BSD-LICENSE.txt
+	rm debian/opennebula-sunstone/usr/share/opennebula/sunstone/public/vendor/flot/LICENSE.txt
+endif
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf dist/
+	scons --clean .
+	(cd src/oca/java/; \
+	rm lib/xmlrpc-common-3.1.jar; \
+	rm lib/xmlrpc-client-3.1.jar; \
+	rm lib/ws-commons-util.jar; \
+	rm -rf jar/; rm -rf share/doc/; \
+	./build.sh -c)
+	-rm -Rf .scons_temp
+	-rm -Rf share/scons/lex_bison.pyc \
+		src/nebula/.xmlrpc_test/xmlrpc_test.* \
+		src/scheduler/.xmlrpc_test/xmlrpc_test.* \
+		src/scheduler/src/sched/.xmlrpc_test \
+		.xmlrpc_test
+	-rm -Rf debian/opennebula-node.postinst
+
+override_dh_installdeb:
+ifneq (,$(filter opennebula-node, $(shell dh_listpackages)))
+	sed "s/@LIBVIRTGRP@/${LIB_VIRT_GROUP}/g" debian/opennebula-node.postinst.in > debian/opennebula-node.postinst
+endif
+	dh_installdeb
+
+override_dh_fixperms:
+	dh_fixperms
+ifneq (,$(filter opennebula, $(shell dh_listpackages)))
+	find debian/opennebula/etc/one/ -type f -exec chmod 644 {} \;
+	chmod 644 debian/opennebula/usr/lib/one/ruby/cloud/occi/*.rb
+	chmod 644 debian/opennebula/usr/lib/one/ruby/cloud/CloudServer.rb
+	chmod 644 debian/opennebula/usr/share/opennebula/ozones/public/vendor/jGrowl/jquery.jgrowl.css
+	#chmod 755 debian/opennebula/usr/lib/one/remotes/im/common.d/ssh_pubkey.sh
+	chmod 755 debian/opennebula/usr/share/opennebula/occi/occi-server.rb
+endif
+ifneq (,$(filter opennebula-tools, $(shell dh_listpackages)))
+	chmod 755 debian/opennebula-tools/usr/lib/one/ruby/cloud/econe/EC2QueryClient.rb
+	chmod 755 debian/opennebula-tools/usr/lib/one/ruby/cloud/occi/OCCIClient.rb
+endif
+ifneq (,$(filter opennebula-node, $(shell dh_listpackages)))
+	chmod 0440 debian/opennebula-node/etc/sudoers.d/opennebula-node
+endif
+ifneq (,$(filter opennebula-sunstone, $(shell dh_listpackages)))
+endif
+
+get-orig-source:
+	uscan --force-download --no-symlink

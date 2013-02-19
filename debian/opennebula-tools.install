@@ -1,0 +1,49 @@
+dist/etc/one/cli/*  /etc/one/cli/
+
+dist/usr/lib/one/ruby/cli/*                          /usr/lib/one/ruby/cli/
+dist/usr/lib/one/ruby/cloud/occi/OCCIClient.rb       /usr/lib/one/ruby/cloud/occi/
+dist/usr/lib/one/ruby/cloud/econe/EC2QueryClient.rb  /usr/lib/one/ruby/cloud/econe/
+dist/usr/lib/one/ruby/cloud/CloudClient.rb           /usr/lib/one/ruby/cloud/
+dist/usr/lib/one/ruby/opennebula/ssh_auth.rb                    /usr/lib/one/ruby/
+
+dist/usr/share/one/install_gems                      /usr/share/opennebula/
+
+dist/usr/bin/econe-allocate-address      /usr/bin/
+dist/usr/bin/econe-associate-address     /usr/bin/
+dist/usr/bin/econe-describe-addresses    /usr/bin/
+dist/usr/bin/econe-describe-images       /usr/bin/
+dist/usr/bin/econe-describe-instances    /usr/bin/
+dist/usr/bin/econe-disassociate-address  /usr/bin/
+dist/usr/bin/econe-register              /usr/bin/
+dist/usr/bin/econe-release-address       /usr/bin/
+dist/usr/bin/econe-run-instances         /usr/bin/
+dist/usr/bin/econe-terminate-instances   /usr/bin/
+dist/usr/bin/econe-upload                /usr/bin/
+dist/usr/bin/econe-attach-volume         /usr/bin/
+dist/usr/bin/econe-create-volume         /usr/bin/
+dist/usr/bin/econe-delete-volume         /usr/bin/
+dist/usr/bin/econe-describe-volumes      /usr/bin/
+dist/usr/bin/econe-detach-volume         /usr/bin/
+dist/usr/bin/econe-reboot-instances      /usr/bin/
+dist/usr/bin/econe-start-instances       /usr/bin/
+dist/usr/bin/econe-stop-instances        /usr/bin/
+dist/usr/bin/econe-create-keypair        /usr/bin
+dist/usr/bin/econe-delete-keypair        /usr/bin
+dist/usr/bin/econe-describe-keypairs     /usr/bin
+
+dist/usr/bin/occi-compute                            /usr/bin/
+dist/usr/bin/occi-instance-type                      /usr/bin/
+dist/usr/bin/occi-network                            /usr/bin/
+dist/usr/bin/occi-storage                            /usr/bin/
+
+dist/usr/bin/oneacl                                  /usr/bin/
+dist/usr/bin/onecluster                              /usr/bin/
+dist/usr/bin/onedatastore                            /usr/bin/
+dist/usr/bin/onegroup                                /usr/bin/
+dist/usr/bin/onehost                                 /usr/bin/
+dist/usr/bin/oneimage                                /usr/bin/
+dist/usr/bin/onemarket                               /use/bin/
+dist/usr/bin/onetemplate                             /usr/bin/
+dist/usr/bin/oneuser                                 /usr/bin/
+dist/usr/bin/onevm                                   /usr/bin/
+dist/usr/bin/onevnet                                 /usr/bin/

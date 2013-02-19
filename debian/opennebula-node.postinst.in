@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+ONEHOME=/var/lib/one
+ONE_GROUP=cloud
+ONE_USER=oneadmin
+
+if [ "$1" = "configure" ]; then
+    # Add oneadmin user into @LIBVIRTGRP@ group
+    if getent group @LIBVIRTGRP@ >/dev/null && ! getent group @LIBVIRTGRP@ | cut -f4 -d: | grep -q '\<$ONE_USER\>'; then
+        adduser $ONE_USER @LIBVIRTGRP@
+    fi
+    
+    # Add oneadmin user into kvm group
+    if getent group kvm >/dev/null && ! getent group kvm | cut -f4 -d: | grep -q '\<$ONE_USER\>'; then
+        adduser $ONE_USER kvm
+    fi
+fi
+
+#DEBHELPER#

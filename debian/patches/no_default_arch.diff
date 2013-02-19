@@ -1,0 +1,22 @@
+Description: Don't default to arch = "i686" for KVM driver.
+ Remove ARCH setting in /etc/one/vmm_exec/vmm_exec_kvm.conf,
+ letting user either change that default or in each VM template.
+ .
+ With this change, template images without ARCH attribute will:
+ - See "No ARCH defined and no default provided." in vm.log
+ - Be in FAILED VM state
+Author: Damien Raude-Morvan <drazzib@debian.org>
+Last-Update: 2012-06-03
+Bug-vendor: http://dev.opennebula.org/issues/1286
+Bug-Debian: http://bugs.debian.org/673173
+--- a/src/vmm_mad/exec/vmm_exec_kvm.conf
++++ b/src/vmm_mad/exec/vmm_exec_kvm.conf
+@@ -28,7 +28,7 @@
+ 
+ #VCPU = 1
+ 
+-OS       = [ boot = "hd", arch = "i686" ]
++OS       = [ boot = "hd" ]
+ FEATURES = [ PAE = "no", ACPI = "yes" ]
+ 
+ DISK     = [ driver = "raw" , cache = "default"]

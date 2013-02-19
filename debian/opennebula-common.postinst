@@ -1,0 +1,58 @@
+#!/bin/sh
+
+set -e
+
+ONEHOME=/var/lib/one
+ONE_GROUP=cloud
+ONE_USER=oneadmin
+
+create_cloudgroup() {
+    if ! getent group $ONE_GROUP > /dev/null 2>&1; then
+        addgroup --system $ONE_GROUP
+    fi
+}
+
+create_oneuser() {
+    if ! getent passwd $ONE_USER > /dev/null 2>&1; then
+        adduser --system --ingroup $ONE_GROUP --home $ONEHOME --shell /bin/bash $ONE_USER
+    else
+        ONEHOME=`getent passwd $ONE_USER | cut -f6 -d:`
+	# Renable user (give him a shell)
+        usermod --shell /bin/bash $ONE_USER
+    fi
+}
+
+ssh_key_configure() {
+    if ! [ -d "$ONEHOME/.ssh" ]; then
+        mkdir "$ONEHOME/.ssh"
+        chown $ONE_USER "$ONEHOME/.ssh"
+        chmod 755 "$ONEHOME/.ssh"
+    fi
+    if ! [ -f "$ONEHOME/.ssh/authorized_keys" ]; then
+        touch "$ONEHOME/.ssh/authorized_keys"
+        chown $ONE_USER "$ONEHOME/.ssh/authorized_keys"
+        chmod 600 "$ONEHOME/.ssh/authorized_keys"
+    fi
+    if ! [ -f "$ONEHOME/.ssh/id_rsa" ]; then
+        su $ONE_USER -c "ssh-keygen -N '' -t rsa -f $ONEHOME/.ssh/id_rsa"
+    fi
+}
+
+if [ "$1" = "configure" ]; then
+    create_cloudgroup
+    create_oneuser
+    ssh_key_configure
+
+    if ! [ -d "$ONEHOME/.one" ]; then
+        mkdir "$ONEHOME/.one"
+        chown $ONE_USER "$ONEHOME/.one"
+        chmod 700 "$ONEHOME/.one"
+    fi
+
+    # Use dpkg-statoverride instead of direct chmod/chown
+    if ! dpkg-statoverride --list $ONEHOME >/dev/null 2>&1; then
+        dpkg-statoverride --update --add $ONE_USER root 755 $ONEHOME
+    fi
+fi
+
+#DEBHELPER#

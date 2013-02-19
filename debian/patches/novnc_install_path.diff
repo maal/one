@@ -1,0 +1,16 @@
+--- a/share/install_novnc.sh
++++ b/share/install_novnc.sh
+@@ -6,10 +6,10 @@
+ WEBSOCKIFY_RAW_URL=https://raw.github.com/kanaka/websockify/ee2f269c067c27ef49d63ad11d9efec499423500/websockify
+ 
+ if [ -z "$ONE_LOCATION" ]; then
+-    ONE_SHARE=/usr/share/one
+-    ONE_PUBLIC_SUNSTONE=/usr/lib/one/sunstone/public
++    ONE_SHARE=/usr/share/opennebula
++    ONE_PUBLIC_SUNSTONE=/usr/share/opennebula/sunstone/public
+     SUNSTONE_CONF=/etc/one/sunstone-server.conf
+-    ONE_PUBLIC_SELFSERVICE=/usr/lib/one/ruby/cloud/occi/ui/public
++    ONE_PUBLIC_SELFSERVICE=/usr/share/opennebula/occi/ui/public
+     SELFSERVICE_CONF=/etc/one/occi-server.conf
+ else
+     ONE_SHARE=$ONE_LOCATION/share
