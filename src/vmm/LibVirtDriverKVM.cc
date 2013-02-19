@@ -351,7 +351,7 @@ int LibVirtDriver::deployment_description_kvm(
         else if ( type == "RBD" )
         {
             file << "\t\t<disk type='network' device='disk'>" << endl
-                 << "\t\t\t<source protocol='rbd' name=''"
+                 << "\t\t\t<source protocol='rbd' name='"
                  << source;
 
             if ( clone == "YES" )
