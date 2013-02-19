@@ -183,9 +183,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         - Disable sunstone_system_jquery.diff for now.
       * d/opennebula.manpages: Use upstream manpages when available.
     
-     -- Jaime Melis <jmelis@opennebula.org>  Thu, 19 Jan 2012 18:01:12 +0100
+ -- Jaime Melis <jmelis@opennebula.org>  Thu, 19 Jan 2012 18:01:12 +0100
     
-    opennebula (3.0.0-1) UNRELEASED; urgency=low
+opennebula (3.0.0-1) UNRELEASED; urgency=low
     
       * New upstream release (3.0.0):
         - d/patches/0015-Fix-scons-tests-for-xml-rpc-c-with-gcc-4.6.patch,
@@ -197,9 +197,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * d/opennebula{,-doc}.install: Old script from /usr/lib/one/remotes/
         and samples hooks, dropped.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 07 Oct 2011 19:58:12 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 07 Oct 2011 19:58:12 +0200
     
-    opennebula (2.2.1-1) unstable; urgency=low
+opennebula (2.2.1-1) unstable; urgency=low
     
       * New upstream release.
       * Cherry-pick some patches from upstream git to fix
@@ -210,9 +210,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * Create new arch:all "opennebula-sunstone" package for OpenNebula
         web GUI.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 28 Jun 2011 00:09:51 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 28 Jun 2011 00:09:51 +0200
     
-    opennebula (2.2-1) UNRELEASED; urgency=low
+opennebula (2.2-1) UNRELEASED; urgency=low
     
       * New upstream release:
         - d/patches/fortify-source.diff,
@@ -220,9 +220,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         - d/patches/linking.diff: refreshed.
       * d/copyright: Review for new upstream release (aka sunstone dependencies).
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 08 May 2011 02:11:28 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 08 May 2011 02:11:28 +0200
     
-    opennebula (2.0.1-6) unstable; urgency=low
+opennebula (2.0.1-6) unstable; urgency=low
     
       * xmlrpc-c 1.16 transition:
         - d/control: Build-Depends on libxmlrpc-c++4-dev instead of
@@ -233,9 +233,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * d/patches/ldflags_build.diff: Refreshed.
       * d/patches/linking.diff: Explicit linking with libxml2 (ie. reorder LIBS).
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 20 Feb 2011 17:55:44 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 20 Feb 2011 17:55:44 +0100
     
-    opennebula (2.0.1-5) unstable; urgency=low
+opennebula (2.0.1-5) unstable; urgency=low
     
       * d/patches/ldflags_build.diff: Proposed patch from Jaime Melis to allow
         LDFLAGS setting in OpenNebula build process. Will be included in next
@@ -250,9 +250,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         but with xen-utils was failing as group `libvirt' does not exist.
         Thanks to Łukasz Oleś for report and patch.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Thu, 30 Dec 2010 02:33:32 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Thu, 30 Dec 2010 02:33:32 +0100
     
-    opennebula (2.0.1-4) unstable; urgency=low
+opennebula (2.0.1-4) unstable; urgency=low
     
       * d/opennebula{-node,}.{postint,postrm}: Fix puiparts failure in postrm.
         We cannot rely on adduser being present at package purge time.
@@ -260,24 +260,24 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * d/opennebula-common.postrm: Don't delete user opennebula
         (keep uid/gid permanently) but disable it.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 07 Dec 2010 00:25:50 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 07 Dec 2010 00:25:50 +0100
     
-    opennebula (2.0.1-3) unstable; urgency=low
+opennebula (2.0.1-3) unstable; urgency=low
     
       * d/control: move Depends on openssh-client from opennebula to
         opennebula-common (for ssh-keygen). Closes: #605110.
       * Using dpkg-statoverride instead of chown for postinst.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 05 Dec 2010 18:05:37 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 05 Dec 2010 18:05:37 +0100
     
-    opennebula (2.0.1-2) unstable; urgency=low
+opennebula (2.0.1-2) unstable; urgency=low
     
       * d/rules: Fix FTBFS (Closes: #605042) by using dh_listpackages to detect if
         arch all packages (ie. opennebula-node) debhelper commands will act on.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 26 Nov 2010 20:15:09 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 26 Nov 2010 20:15:09 +0100
     
-    opennebula (2.0.1-1) unstable; urgency=low
+opennebula (2.0.1-1) unstable; urgency=low
     
       * New upstream release.
       * d/rules: Use share/etc/init.d/one.debian as init.d script.
@@ -291,9 +291,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * d/control: Set Maintainer as Debian OpenNebula Maintainers
         and myself as Uploaders.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 26 Nov 2010 01:52:15 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 26 Nov 2010 01:52:15 +0100
     
-    opennebula (2.0-1) experimental; urgency=low
+opennebula (2.0-1) experimental; urgency=low
     
       * First upload to Debian (Closes: #500716):
         - Drop d/patches/fix_cppflags.diff: Merged upstream.
@@ -307,9 +307,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         proper permissions.
       * d/control: Suggests libamazonec2-ruby for Amazon EC2 access.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 02 Nov 2010 19:01:04 +0100
+ -- Damien Raude-Morvan <drazzib@debian.org>  Tue, 02 Nov 2010 19:01:04 +0100
     
-    opennebula (2.0~rc1-1) UNRELEASED; urgency=low
+opennebula (2.0~rc1-1) UNRELEASED; urgency=low
     
       * New upstream release (2.0 RC1).
       * Add d/opennebula.README and d/opennebula-node.README as simple
@@ -323,9 +323,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         - d/rules: Don't chmod shell script.
         - d/opennebula.cron.hourly is disabled.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Mon, 18 Oct 2010 20:15:11 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Mon, 18 Oct 2010 20:15:11 +0200
     
-    opennebula (2.0~beta1-1) UNRELEASED; urgency=low
+opennebula (2.0~beta1-1) UNRELEASED; urgency=low
     
       * New upstream release (2.0 beta1):
         - shlib_links.diff: disabled.
@@ -350,9 +350,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * Set myself as Maintainer and Soren Hansen as Uploaders
       * Install bash completion feature for one* CLI.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 20 Aug 2010 00:50:13 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Fri, 20 Aug 2010 00:50:13 +0200
     
-    opennebula (1.4.0-1) UNRELEASED; urgency=low
+opennebula (1.4.0-1) UNRELEASED; urgency=low
     
       * New upstream release (LP: #510904):
         - freecpu_kvm.diff: merged.
@@ -378,54 +378,54 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
           (created by init script).
       * Switch to dh 7 style for debian/rules.
     
-     -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Aug 2010 17:00:28 +0200
+ -- Damien Raude-Morvan <drazzib@debian.org>  Sun, 01 Aug 2010 17:00:28 +0200
     
-    opennebula (1.2-0ubuntu6) karmic; urgency=low
+opennebula (1.2-0ubuntu6) karmic; urgency=low
     
       * debian/patches/fix-gcc44-ftbfs.patch: Fixes FTBFS.
     
      -- Chuck Short <zulcss@ubuntu.com>  Mon, 26 Oct 2009 22:19:48 -0400
     
-    opennebula (1.2-0ubuntu5) jaunty; urgency=low
+opennebula (1.2-0ubuntu5) jaunty; urgency=low
     
       * No-change rebuild to fix lpia shared library dependencies.
     
-     -- Colin Watson <cjwatson@ubuntu.com>  Thu, 19 Mar 2009 14:45:27 +0000
+ -- Colin Watson <cjwatson@ubuntu.com>  Thu, 19 Mar 2009 14:45:27 +0000
     
-    opennebula (1.2-0ubuntu4) jaunty; urgency=low
+opennebula (1.2-0ubuntu4) jaunty; urgency=low
     
       * Fix "ACPI setting is backwards" (LP: #342183)
     
-     -- Soren Hansen <soren@ubuntu.com>  Fri, 13 Mar 2009 11:00:44 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 13 Mar 2009 11:00:44 +0100
     
-    opennebula (1.2-0ubuntu3) jaunty; urgency=low
+opennebula (1.2-0ubuntu3) jaunty; urgency=low
     
       * Add ruby dependency for opennebula-node. (LP: #329258)
       * Always show ssh setup help (LP: #329507)
     
-     -- Soren Hansen <soren@ubuntu.com>  Fri, 20 Feb 2009 13:51:51 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 20 Feb 2009 13:51:51 +0100
     
-    opennebula (1.2-0ubuntu2) jaunty; urgency=low
+opennebula (1.2-0ubuntu2) jaunty; urgency=low
     
       * Also distribute known_hosts through the key distribution mechanism.
         (LP: #331838)
     
-     -- Soren Hansen <soren@ubuntu.com>  Fri, 20 Feb 2009 10:50:18 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 20 Feb 2009 10:50:18 +0100
     
-    opennebula (1.2-0ubuntu1) jaunty; urgency=low
+opennebula (1.2-0ubuntu1) jaunty; urgency=low
     
       * Update to new upstream release.
       * Add missing debhelper snippet in opennebula's postinst.
     
-     -- Soren Hansen <soren@ubuntu.com>  Wed, 11 Feb 2009 13:46:03 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Wed, 11 Feb 2009 13:46:03 +0100
     
-    opennebula (1.1.85+svn329-0ubuntu5) jaunty; urgency=low
+opennebula (1.1.85+svn329-0ubuntu5) jaunty; urgency=low
     
       * Fix broken call to chown in opennebula's postinst.
     
-     -- Soren Hansen <soren@ubuntu.com>  Fri, 06 Feb 2009 10:16:27 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 06 Feb 2009 10:16:27 +0100
     
-    opennebula (1.1.85+svn329-0ubuntu4) jaunty; urgency=low
+opennebula (1.1.85+svn329-0ubuntu4) jaunty; urgency=low
     
       * It turns out that the nodes also benefit from having an SSH key,
         so move the key generation code to opennebula-common.
@@ -441,15 +441,15 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
         - Change the onevm, onehost, and onevnet table output slightly to
           make it more easily parsable.
     
-     -- Soren Hansen <soren@ubuntu.com>  Fri, 30 Jan 2009 17:04:23 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 30 Jan 2009 17:04:23 +0100
     
-    opennebula (1.1.85+svn329-0ubuntu3) jaunty; urgency=low
+opennebula (1.1.85+svn329-0ubuntu3) jaunty; urgency=low
     
       * Fix up some missing debhelper bits in maintainer scripts.
     
-     -- Soren Hansen <soren@ubuntu.com>  Thu, 29 Jan 2009 00:22:13 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Thu, 29 Jan 2009 00:22:13 +0100
     
-    opennebula (1.1.85+svn329-0ubuntu2) jaunty; urgency=low
+opennebula (1.1.85+svn329-0ubuntu2) jaunty; urgency=low
     
       * freecpu_kvm.diff:
         - Return the correct amount of free and used cpu for kvm hosts.
@@ -464,9 +464,9 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
           symlinks.
       * Fix speling mistaek in node_creation_help.diff. (LP: #322211)
     
-     -- Soren Hansen <soren@ubuntu.com>  Wed, 28 Jan 2009 23:49:40 +0100
+ -- Soren Hansen <soren@ubuntu.com>  Wed, 28 Jan 2009 23:49:40 +0100
     
-    opennebula (1.1.85+svn329-0ubuntu1) jaunty; urgency=low
+opennebula (1.1.85+svn329-0ubuntu1) jaunty; urgency=low
     
       * Initial upload.
       * Patches included:
@@ -479,7 +479,5 @@ opennebula (3.2.0-1) UNRELEASED; urgency=low
       * Made scons clean targets (and hence debian/rules clean) not fail in the
         absence of libxmlrpc.
     
-     -- Soren Hansen <soren@ubuntu.com>  Mon, 19 Jan 2009 13:29:05 +0100
-    
-
+ -- Soren Hansen <soren@ubuntu.com>  Mon, 19 Jan 2009 13:29:05 +0100
  -- OpenNebula Team <contact@opennebula.org> Fri, 11 Jan 2013 12:37:56 +0100

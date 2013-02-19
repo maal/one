@@ -121,8 +121,7 @@ Depends: ruby | libinterpreter-ruby,
          libsqlite3-ruby,
          libnokogiri-ruby,
          rubygems,
-         ${misc:Depends},
-         ${ruby:Depends}
+         ${misc:Depends}
 Description: Ruby bindings for OpenNebula Cloud API (OCA)
  OpenNebula is an open source virtual infrastructure engine that enables the
  dynamic deployment and re-placement of virtual machines on a pool of physical
@@ -138,8 +137,7 @@ Package: opennebula-tools
 Architecture: all
 Depends: opennebula-common (= ${source:Version}),
          ruby-opennebula (= ${source:Version}),
-         ${misc:Depends},
-         ${ruby:Depends}
+         ${misc:Depends}
 Description: Command-line tools for OpenNebula Cloud
  OpenNebula is an open source virtual infrastructure engine that enables the
  dynamic deployment and re-placement of virtual machines on a pool of physical
