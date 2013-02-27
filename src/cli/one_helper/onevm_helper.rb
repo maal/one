@@ -65,6 +65,12 @@ class OneVMHelper < OpenNebulaHelper::OneHelper
         :format     => Time
     }
 
+    ALL_TEMPLATE = {
+        :name       => "all",
+        :large      => "--all",
+        :description => "Show all template data"
+    }
+
     def self.rname
         "VM"
     end
@@ -196,7 +202,7 @@ class OneVMHelper < OpenNebulaHelper::OneHelper
         OpenNebula::VirtualMachinePool.new(@client, user_flag)
     end
 
-    def format_resource(vm)
+    def format_resource(vm, options = {})
         str_h1="%-80s"
         str="%-20s: %-20s"
 
@@ -281,13 +287,122 @@ class OneVMHelper < OpenNebulaHelper::OneHelper
             puts
         end
 
+        if vm.has_elements?("/VM/TEMPLATE/DISK")
+            CLIHelper.print_header(str_h1 % "VM DISKS",false)
+            CLIHelper::ShowTable.new(nil, self) do
+                column :ID, "", :size=>3 do |d|
+                    d["DISK_ID"]
+                end
+
+                column :DATASTORE, "", :left, :size=>10 do |d|
+                    d["DATASTORE"]
+                end
+
+                column :TARGET, "", :size=>6 do |d|
+                    d["TARGET"]
+                end
+
+                column :IMAGE, "", :left, :size=>35 do |d|
+                    if d["IMAGE"]
+                        d["IMAGE"]
+                    else
+                        case d["TYPE"].upcase
+                        when "FS"
+                            "#{d["FORMAT"]} - "<<
+                            OpenNebulaHelper.unit_to_str(d["SIZE"].to_i,
+                                                         {}, "M")
+                        when "SWAP"
+                            OpenNebulaHelper.unit_to_str(d["SIZE"].to_i,
+                                                         {}, "M")
+
+                        end
+                    end
+                end
+
+                column :TYPE, "", :left, :size=>4 do |d|
+                    d["TYPE"].downcase
+                end
+
+                column :"R/O", "", :size=>3 do |d|
+                    d["READONLY"]
+                end
+
+                column :"SAVE", "", :size=>4 do |d|
+                    d["SAVE"] || "NO"
+                end
+
+                column :"CLONE", "", :size=>5 do |d|
+                    d["CLONE"]
+                end
+
+                column :"SAVE_AS", "", :size=>7 do |d|
+                    d["SAVE_AS"] || "-"
+                end
+
+
+                default :ID, :TARGET, :IMAGE, :TYPE,
+                    :SAVE, :SAVE_AS
+            end.show([vm.to_hash['VM']['TEMPLATE']['DISK']].flatten, {})
+
+            while vm.has_elements?("/VM/TEMPLATE/DISK")
+                vm.delete_element("/VM/TEMPLATE/DISK")
+            end if !options[:all]
+
+            puts
+        end
+
+        if vm.has_elements?("/VM/TEMPLATE/NIC")
+            CLIHelper.print_header(str_h1 % "VM NICS",false)
+
+            nic_id=0
+            CLIHelper::ShowTable.new(nil, self) do
+                column :ID, "", :size=>3 do |d|
+                    nic_id+=1
+                    nic_id-1
+                end
+
+                column :NETWORK, "", :left, :size=>25 do |d|
+                    d["NETWORK"] || "-"
+                end
+
+                column :IP, "", :size=>15 do |d|
+                    d["IP"] || "-"
+                end
+
+                column :MAC, "", :size=>17 do |d|
+                    d["MAC"] || "-"
+                end
+
+                column :VLAN, "", :size=>4 do |d|
+                    if !d["VLAN"]
+                        "no"
+                    else
+                        d["VLAN"].downcase
+                    end
+                end
+
+                column :BRIDGE, "", :left, :size=>11 do |d|
+                    d["BRIDGE"] || "-"
+                end
+
+            end.show([vm.to_hash['VM']['TEMPLATE']['NIC']].flatten, {})
+
+            while vm.has_elements?("/VM/TEMPLATE/NIC")
+                vm.delete_element("/VM/TEMPLATE/NIC")
+            end if !options[:all]
+
+            puts
+        end
+
         CLIHelper.print_header(str_h1 % "VIRTUAL MACHINE TEMPLATE",false)
         puts vm.template_str
 
         if vm.has_elements?("/VM/USER_TEMPLATE")
             puts
 
-            vm.delete_element("/VM/USER_TEMPLATE/SCHED_ACTION")
+            if !options[:all]
+                vm.delete_element("/VM/USER_TEMPLATE/SCHED_ACTION")
+            end
 
             CLIHelper.print_header(str_h1 % "USER TEMPLATE",false)
             puts vm.template_like_str('USER_TEMPLATE')
