@@ -1,0 +1,19 @@
+--- install.sh.orig	2013-02-27 11:29:59.552432414 +0100
++++ install.sh	2013-02-27 11:30:42.027185577 +0100
+@@ -1480,14 +1480,14 @@
+                 src/sunstone/public/vendor/jGrowl/NOTICE"
+ 
+ SUNSTONE_PUBLIC_VENDOR_JQUERY="\
+-                        src/sunstone/public/vendor/jQuery/jquery-1.7.2.min.js \
++                        src/sunstone/public/vendor/jQuery/jquery.min.js \
+                         src/sunstone/public/vendor/jQuery/MIT-LICENSE.txt \
+                         src/sunstone/public/vendor/jQuery/NOTICE"
+ 
+ SUNSTONE_PUBLIC_VENDOR_JQUERYUI="\
+ src/sunstone/public/vendor/jQueryUI/jquery-ui-1.8.16.custom.css \
+ src/sunstone/public/vendor/jQueryUI/MIT-LICENSE.txt \
+-src/sunstone/public/vendor/jQueryUI/jquery-ui-1.8.16.custom.min.js \
++src/sunstone/public/vendor/jQueryUI/jquery-ui.min.js \
+ src/sunstone/public/vendor/jQueryUI/NOTICE \
+ "
+
