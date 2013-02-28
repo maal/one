@@ -1480,14 +1480,14 @@ SUNSTONE_PUBLIC_VENDOR_JGROWL="\
                 src/sunstone/public/vendor/jGrowl/NOTICE"
 
 SUNSTONE_PUBLIC_VENDOR_JQUERY="\
-                        src/sunstone/public/vendor/jQuery/jquery-1.7.2.min.js \
+                        src/sunstone/public/vendor/jQuery/jquery.min.js \
                         src/sunstone/public/vendor/jQuery/MIT-LICENSE.txt \
                         src/sunstone/public/vendor/jQuery/NOTICE"
 
 SUNSTONE_PUBLIC_VENDOR_JQUERYUI="\
 src/sunstone/public/vendor/jQueryUI/jquery-ui-1.8.16.custom.css \
 src/sunstone/public/vendor/jQueryUI/MIT-LICENSE.txt \
-src/sunstone/public/vendor/jQueryUI/jquery-ui-1.8.16.custom.min.js \
+src/sunstone/public/vendor/jQueryUI/jquery-ui.min.js \
 src/sunstone/public/vendor/jQueryUI/NOTICE \
 "
 
